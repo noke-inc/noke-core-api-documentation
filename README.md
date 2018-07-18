@@ -184,7 +184,7 @@ Used to request offline keys for a lock or locks, invalidate any existing keys, 
 {
     "issue": [
     	{
-            "macs": ["XX:XX","YY:YY","ZZ:ZZ"]
+            "macs": ["XX:XX","YY:YY","ZZ:ZZ"],
             "tracking_keys": ["bob","linda"]
     	}
     ]
@@ -194,18 +194,18 @@ Used to request offline keys for a lock or locks, invalidate any existing keys, 
 
 ```json
 {
-    "data": [
+    "data": {
         "locks": [
             {
                 "mac": "XX:XX",
                 "keys": [
                 	{
-                        "tracking_key": "bob"
+                        "tracking_key": "bob",
                         "offline_key": "abc",
                         "unlock_command": "123"
                 	},
                 	{
-                        "tracking_key": "linda"
+                        "tracking_key": "linda",
                         "offline_key": "def",
                         "unlock_command": "456"
                 	}
@@ -215,12 +215,12 @@ Used to request offline keys for a lock or locks, invalidate any existing keys, 
                 "mac": "YY:YY",
                 "keys": [
                 	{
-                        "tracking_key": "bob"
+                        "tracking_key": "bob",
                         "offline_key": "ghi",
                         "unlock_command": "789"
                 	},
                 	{
-                        "tracking_key": "linda"
+                        "tracking_key": "linda",
                         "offline_key": "jkl",
                         "unlock_command": "A00"
                 	}
@@ -230,19 +230,19 @@ Used to request offline keys for a lock or locks, invalidate any existing keys, 
                 "mac": "ZZ:ZZ",
                 "keys": [
                 	{
-                        "tracking_key": "bob"
+                        "tracking_key": "bob",
                         "offline_key": "ghi",
                         "unlock_command": "789"
                 	},
                 	{
-                        "tracking_key": "linda"
+                        "tracking_key": "linda",
                         "offline_key": "jkl",
                         "unlock_command": "A00"
                 	}
                 ]
             }
         ]
-    ]
+    }
 }
 ```
 
@@ -302,18 +302,18 @@ Input (limit by tracking key)
 
 ```json
 {
-    "data": [
+    "data": {
         "locks": [
             {
                 "mac": "XX:XX",
                 "keys": [
                 	{
-                        "tracking_key": "bob"
+                        "tracking_key": "bob",
                         "offline_key": "abc",
                         "unlock_command": "123"
                 	},
                 	{
-                        "tracking_key": "linda"
+                        "tracking_key": "linda",
                         "offline_key": "def",
                         "unlock_command": "456"
                 	}
@@ -323,12 +323,12 @@ Input (limit by tracking key)
                 "mac": "YY:YY",
                 "keys": [
                 	{
-                        "tracking_key": "bob"
+                        "tracking_key": "bob",
                         "offline_key": "ghi",
                         "unlock_command": "789"
                 	},
                 	{
-                        "tracking_key": "linda"
+                        "tracking_key": "linda",
                         "offline_key": "jkl",
                         "unlock_command": "A00"
                 	}
@@ -338,19 +338,19 @@ Input (limit by tracking key)
                 "mac": "ZZ:ZZ",
                 "keys": [
                 	{
-                        "tracking_key": "bob"
+                        "tracking_key": "bob",
                         "offline_key": "ghi",
                         "unlock_command": "789"
                 	},
                 	{
-                        "tracking_key": "linda"
+                        "tracking_key": "linda",
                         "offline_key": "jkl",
                         "unlock_command": "A00"
                 	}
                 ]
             }
         ]
-    ]
+    }
 }
 ```
 
@@ -383,8 +383,8 @@ Input (revoke specific)
 
 ```json
 {
-    revoke: [
-        {tracking_keys: ["bob"], macs: ["XX:XX"]}
+    "revoke": [
+        {"tracking_keys": ["bob"], "macs": ["XX:XX"]}
     ]
 }
 ```
@@ -393,9 +393,9 @@ Input (revoke all keys for mac/macs)
 
 ```json
 {
-    revoke: [
+    "revoke": [
         {
-            macs: ["YY:YY"]
+            "macs": ["YY:YY"]
         }
     ]
 }
@@ -405,9 +405,9 @@ Input (revoke all keys for tracking key/keys)
 
 ```json
 {
-    revoke: [
+    "revoke": [
     	{
-        	tracking_keys: ["bob"]
+        	"tracking_keys": ["bob"]
     	}
     ]
 }
@@ -418,30 +418,30 @@ Input (revoke all keys for tracking key/keys)
 
 ```json
 {
-    data: [
-        locks: [
+    "data": {
+        "locks": [
             {
-                mac: "XX:XX",
-                keys: [
+                "mac": "XX:XX",
+                "keys": [
                 	{
-                        tracking_key: "linda"
-                        offline_key: "def",
-                        unlock_command: "456"
+                        "tracking_key": "linda",
+                        "offline_key": "def",
+                        "unlock_command": "456"
                 	}
                 ]
             },
            {
-                mac: "YY:YY",
-                keys: [
+                "mac": "YY:YY",
+                "keys": [
                 	{
-                        tracking_key: "steve"
-                        offline_key: "jkl",
-                        unlock_command: "A00"
+                        "tracking_key": "steve",
+                        "offline_key": "jkl",
+                        "unlock_command": "A00"
                 	}
                 ]
             }
         ]
-    ]
+    }
 }
 ```
 
