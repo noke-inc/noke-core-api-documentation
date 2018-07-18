@@ -166,7 +166,7 @@ Used to request offline keys for a lock or locks, invalidate any existing keys, 
 
 #### Issue Keys
 
-##### HEADERS
+#### HEADERS
 
 |  Key | Value  |
 |--|--|
@@ -182,10 +182,10 @@ Used to request offline keys for a lock or locks, invalidate any existing keys, 
 
 ```json
 {
-    issue: [
+    "issue": [
     	{
-            macs: ["XX:XX","YY:YY","ZZ:ZZ"]
-            tracking_keys: ["bob","linda"]
+            "macs": ["XX:XX","YY:YY","ZZ:ZZ"]
+            "tracking_keys": ["bob","linda"]
     	}
     ]
 }
@@ -194,56 +194,57 @@ Used to request offline keys for a lock or locks, invalidate any existing keys, 
 
 ```json
 {
-    data: [
-        locks: [
+    "data": [
+        "locks": [
             {
-                mac: "XX:XX",
-                keys: [
+                "mac": "XX:XX",
+                "keys": [
                 	{
-                        tracking_key: "bob"
-                        offline_key: "abc",
-                        unlock_command: "123"
+                        "tracking_key": "bob"
+                        "offline_key": "abc",
+                        "unlock_command": "123"
                 	},
                 	{
-                        tracking_key: "linda"
-                        offline_key: "def",
-                        unlock_command: "456"
+                        "tracking_key": "linda"
+                        "offline_key": "def",
+                        "unlock_command": "456"
                 	}
                 ]
             },
            {
-                mac: "YY:YY",
-                keys: [
+                "mac": "YY:YY",
+                "keys": [
                 	{
-                        tracking_key: "bob"
-                        offline_key: "ghi",
-                        unlock_command: "789"
+                        "tracking_key": "bob"
+                        "offline_key": "ghi",
+                        "unlock_command": "789"
                 	},
                 	{
-                        tracking_key: "linda"
-                        offline_key: "jkl",
-                        unlock_command: "A00"
+                        "tracking_key": "linda"
+                        "offline_key": "jkl",
+                        "unlock_command": "A00"
                 	}
                 ]
             },
              {
-                mac: "ZZ:ZZ",
-                keys: [
+                "mac": "ZZ:ZZ",
+                "keys": [
                 	{
-                        tracking_key: "bob"
-                        offline_key: "ghi",
-                        unlock_command: "789"
+                        "tracking_key": "bob"
+                        "offline_key": "ghi",
+                        "unlock_command": "789"
                 	},
                 	{
-                        tracking_key: "linda"
-                        offline_key: "jkl",
-                        unlock_command: "A00"
+                        "tracking_key": "linda"
+                        "offline_key": "jkl",
+                        "unlock_command": "A00"
                 	}
                 ]
             }
         ]
     ]
 }
+```
 
 |Parameter|Description|
 |--|--|
@@ -280,8 +281,8 @@ Input (limit by mac)
 
 ```json
 {
-    display: {
-        macs: ["XX:XX"]
+    "display": {
+        "macs": ["XX:XX"]
     }
 }
 ```
@@ -290,8 +291,8 @@ Input (limit by tracking key)
 
 ```json
 {
-    display: {
-        tracking_keys: ["bob"]
+    "display": {
+        "tracking_keys": ["bob"]
     }
 }
 ```
@@ -301,56 +302,57 @@ Input (limit by tracking key)
 
 ```json
 {
-    data: [
-        locks: [
+    "data": [
+        "locks": [
             {
-                mac: "XX:XX",
-                keys: [
+                "mac": "XX:XX",
+                "keys": [
                 	{
-                        tracking_key: "bob"
-                        offline_key: "abc",
-                        unlock_command: "123"
+                        "tracking_key": "bob"
+                        "offline_key": "abc",
+                        "unlock_command": "123"
                 	},
                 	{
-                        tracking_key: "linda"
-                        offline_key: "def",
-                        unlock_command: "456"
+                        "tracking_key": "linda"
+                        "offline_key": "def",
+                        "unlock_command": "456"
                 	}
                 ]
             },
            {
-                mac: "YY:YY",
-                keys: [
+                "mac": "YY:YY",
+                "keys": [
                 	{
-                        tracking_key: "bob"
-                        offline_key: "ghi",
-                        unlock_command: "789"
+                        "tracking_key": "bob"
+                        "offline_key": "ghi",
+                        "unlock_command": "789"
                 	},
                 	{
-                        tracking_key: "linda"
-                        offline_key: "jkl",
-                        unlock_command: "A00"
+                        "tracking_key": "linda"
+                        "offline_key": "jkl",
+                        "unlock_command": "A00"
                 	}
                 ]
             },
              {
-                mac: "ZZ:ZZ",
-                keys: [
+                "mac": "ZZ:ZZ",
+                "keys": [
                 	{
-                        tracking_key: "bob"
-                        offline_key: "ghi",
-                        unlock_command: "789"
+                        "tracking_key": "bob"
+                        "offline_key": "ghi",
+                        "unlock_command": "789"
                 	},
                 	{
-                        tracking_key: "linda"
-                        offline_key: "jkl",
-                        unlock_command: "A00"
+                        "tracking_key": "linda"
+                        "offline_key": "jkl",
+                        "unlock_command": "A00"
                 	}
                 ]
             }
         ]
     ]
 }
+```
 
 |Parameter|Description|
 |--|--|
