@@ -160,7 +160,297 @@ Used to unlock a lock. Requires a session string from the lock (*see [Nokē Mobi
 |```commands``` | A string of commands sent to the lock by the [Nokē Mobile library](https://github.com/noke-inc/noke-mobile-library-ios)|
 |```request``` | Name of the request|
 
+### ``` POST /keys/ ```
 
+Used to request offline keys for a lock or locks, invalidate any existing keys, or view the status of any offline keys.  These offline keys can be used by the mobile libraries to unlock the lock without an active network connection (*see [Nokē Mobile library documentation](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*).
+
+#### Issue Keys
+
+##### HEADERS
+
+|  Key | Value  |
+|--|--|
+|Content-Type | application/json  |
+|Authorization | Bearer *api_key* |
+
+#### BODY
+
+|Parameter|Description|
+|--|--|
+|```macs``` | The mac address(es) of the lock(s)|
+|```tracking_keys```| Identifying string used to track activity and revoke keys|
+
+```json
+{
+    issue: [
+    	{
+            macs: ["XX:XX","YY:YY","ZZ:ZZ"]
+            tracking_keys: ["bob","linda"]
+    	}
+    ]
+}
+```
+#### EXAMPLE RESPONSE
+
+```json
+{
+    data: [
+        locks: [
+            {
+                mac: "XX:XX",
+                keys: [
+                	{
+                        tracking_key: "bob"
+                        offline_key: "abc",
+                        unlock_command: "123"
+                	},
+                	{
+                        tracking_key: "linda"
+                        offline_key: "def",
+                        unlock_command: "456"
+                	}
+                ]
+            },
+           {
+                mac: "YY:YY",
+                keys: [
+                	{
+                        tracking_key: "bob"
+                        offline_key: "ghi",
+                        unlock_command: "789"
+                	},
+                	{
+                        tracking_key: "linda"
+                        offline_key: "jkl",
+                        unlock_command: "A00"
+                	}
+                ]
+            },
+             {
+                mac: "ZZ:ZZ",
+                keys: [
+                	{
+                        tracking_key: "bob"
+                        offline_key: "ghi",
+                        unlock_command: "789"
+                	},
+                	{
+                        tracking_key: "linda"
+                        offline_key: "jkl",
+                        unlock_command: "A00"
+                	}
+                ]
+            }
+        ]
+    ]
+}
+
+|Parameter|Description|
+|--|--|
+|```mac``` | Mac address of the lock.|
+|```tracking_key``` | String used to track activity associated with the key|
+|```offline_key``` | Key used by the mobile library to encrypt the unlock command|
+|```unlock_command```| Command sent by the mobile library to the lock to unlock the lock|
+|```error_code``` | Int value of the error thrown|
+|```request``` | Name of the request|
+
+#### View All Issued Keys
+
+##### HEADERS
+
+|  Key | Value  |
+|--|--|
+|Content-Type | application/json  |
+|Authorization | Bearer *api_key* |
+
+#### BODY
+
+|Parameter|Description|
+|--|--|
+|```macs``` | The mac address(es) of the lock(s)|
+|```tracking_keys```| Identifying string used to track activity and revoke keys|
+
+Input (empty)
+
+```json
+{}
+```
+
+Input (limit by mac)
+
+```json
+{
+    display: {
+        macs: ["XX:XX"]
+    }
+}
+```
+
+Input (limit by tracking key)
+
+```json
+{
+    display: {
+        tracking_keys: ["bob"]
+    }
+}
+```
+
+
+#### EXAMPLE RESPONSE
+
+```json
+{
+    data: [
+        locks: [
+            {
+                mac: "XX:XX",
+                keys: [
+                	{
+                        tracking_key: "bob"
+                        offline_key: "abc",
+                        unlock_command: "123"
+                	},
+                	{
+                        tracking_key: "linda"
+                        offline_key: "def",
+                        unlock_command: "456"
+                	}
+                ]
+            },
+           {
+                mac: "YY:YY",
+                keys: [
+                	{
+                        tracking_key: "bob"
+                        offline_key: "ghi",
+                        unlock_command: "789"
+                	},
+                	{
+                        tracking_key: "linda"
+                        offline_key: "jkl",
+                        unlock_command: "A00"
+                	}
+                ]
+            },
+             {
+                mac: "ZZ:ZZ",
+                keys: [
+                	{
+                        tracking_key: "bob"
+                        offline_key: "ghi",
+                        unlock_command: "789"
+                	},
+                	{
+                        tracking_key: "linda"
+                        offline_key: "jkl",
+                        unlock_command: "A00"
+                	}
+                ]
+            }
+        ]
+    ]
+}
+
+|Parameter|Description|
+|--|--|
+|```mac``` | Mac address of the lock.|
+|```tracking_key``` | String used to track activity associated with the key|
+|```offline_key``` | Key used by the mobile library to encrypt the unlock command|
+|```unlock_command```| Command sent by the mobile library to the lock to unlock the lock|
+|```error_code``` | Int value of the error thrown|
+|```request``` | Name of the request|
+
+#### Revoke Keys
+
+##### HEADERS
+
+|  Key | Value  |
+|--|--|
+|Content-Type | application/json  |
+|Authorization | Bearer *api_key* |
+
+#### BODY
+
+|Parameter|Description|
+|--|--|
+|```macs``` | The mac address(es) of the lock(s)|
+|```tracking_keys```| Identifying string used to track activity and revoke keys|
+
+Input (revoke specific)
+
+```json
+{
+    revoke: [
+        {tracking_keys: ["bob"], macs: ["XX:XX"]}
+    ]
+}
+```
+
+Input (revoke all keys for mac/macs)
+
+```json
+{
+    revoke: [
+        {
+            macs: ["YY:YY"]
+        }
+    ]
+}
+```
+
+Input (revoke all keys for tracking key/keys)
+
+```json
+{
+    revoke: [
+    	{
+        	tracking_keys: ["bob"]
+    	}
+    ]
+}
+```
+
+
+#### EXAMPLE RESPONSE
+
+```json
+{
+    data: [
+        locks: [
+            {
+                mac: "XX:XX",
+                keys: [
+                	{
+                        tracking_key: "linda"
+                        offline_key: "def",
+                        unlock_command: "456"
+                	}
+                ]
+            },
+           {
+                mac: "YY:YY",
+                keys: [
+                	{
+                        tracking_key: "steve"
+                        offline_key: "jkl",
+                        unlock_command: "A00"
+                	}
+                ]
+            }
+        ]
+    ]
+}
+```
+
+|Parameter|Description|
+|--|--|
+|```mac``` | Mac address of the lock.|
+|```tracking_key``` | String used to track activity associated with the key|
+|```offline_key``` | Key used by the mobile library to encrypt the unlock command|
+|```unlock_command```| Command sent by the mobile library to the lock to unlock the lock|
+|```error_code``` | Int value of the error thrown|
+|```request``` | Name of the request|
 
 
 ##  Activity
