@@ -583,8 +583,8 @@ Used to view human-readable activity logs. Can find specific activity logs via f
 |```lock_mac``` | Mac address of the lock|
 |```action``` | Action type of the log (ie: unlocked, locked)|
 |```recorded_time``` | Date that the log was received by the mobile device|
-|```range_date_start``` | If the exact time is not known (offline unlock or quick-click) this is the known earliest date the event could have occured|
-|```range_date_end``` | If the exact time is not known (offline unlock or quick-click) this is the known latest date the event could have occured|
+|```range_date_start``` | If the exact time is not known (offline unlock or quick-click) this is the known earliest date the event could have occurred|
+|```range_date_end``` | If the exact time is not known (offline unlock or quick-click) this is the known latest date the event could have occurred|
 |```tracking_key``` | A string sent up on the unlock endpoint that can be used to associate activity|
 |```request``` | Name of the request|
 
