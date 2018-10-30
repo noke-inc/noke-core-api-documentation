@@ -537,7 +537,9 @@ Used to view human-readable activity logs. Can find specific activity logs via f
     "tracking_keys": [
         "bill@gmail.com", 
         "ted@gmail.com"
-    ]
+    ],    
+    "before": "2018-05-23T20:08:34Z",
+    "after": "2018-05-21T23:22:16Z"
 }
 ```
 
