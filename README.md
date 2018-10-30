@@ -580,3 +580,136 @@ Used to view human-readable activity logs. Can find specific activity logs via f
 |```range_date_end``` | If the exact time is not known (offline unlock or quick-click) this is the known latest date the event could have occured|
 |```tracking_key``` | A string sent up on the unlock endpoint that can be used to associate activity|
 |```request``` | Name of the request|
+
+
+### ``` POST /qc/ ```
+
+Used to manage quick clicks for a lock or locks, revoke existing quick clicks, or view the status of any active quick clicks.  Quick clicks can be used to unlock the lock without additional hardware. 
+
+#### Overview
+
+A quick click is a code that allows entry to a lock via a series of long and short presses. This allows access to a lock without the use of additional software / hardware outside the lock once a quick click has been synced with a lock.
+
+Quick click codes are represented as a string of 1's and 0's representing long and short presses respectively. The exact mechanism of how the quick click is used is dependent on the lock. For example, the standard padlocks use the shackle to enter quick clicks, while the HD padlocks and the U-Lock use a push button at the base of the lock. Typically, when entering a quick click, an LED on the lock will light up for a short press, and the LED will change color on a long press.
+
+Quick clicks may be unlimited use, or may have a limited use count which is rendered unusable once the quick click is used a given number of times.
+
+Quick clicks are created and removed via the API and are synced with a lock when an online unlock is requested. 
+
+**IMPORTANT**:
+
+* Each quick click MUST be a unique code. Quick click codes can only be reused once they have been removed from a lock.
+* Quick clicks are only added to / removed from a lock via an *online* unlock.
+* Each lock can hold up to 100 quick clicks.
+* Quick click codes must be between 3 to 24 characters
+* Quick click's can have a limited use count between 1-244 uses OR may be unlimited use represented by a use count of 255
+
+#### HEADERS
+
+| Key           | Value            |
+| ------------- | ---------------- |
+| Content-Type  | application/json |
+| Authorization | Bearer *api_key* |
+
+#### BODY
+
+```json
+{
+    "issue": [
+        {
+            "mac": "XX:XX:XX:XX:XX",
+			"quick_clicks":[
+				{	
+					"code": "101",
+					"uses": 255
+				},
+				{
+					"code": "010",
+					"uses": 10
+				}
+			]
+        }
+	],
+    "revoke": [
+        {
+            "mac": "XX:XX:XX:XX:XY",
+			"quick_clicks":[
+				{	
+					"code": "101"
+				}
+            ]
+        }
+    ],
+    "display": {
+        "macs": ["XX:XX:XX:XX:XX", "XX:XX:XX:XX:XY"]
+    }
+}
+```
+
+#### PARAMETERS
+
+| Key            | Description                                                  |
+| -------------- | ------------------------------------------------------------ |
+| `issue`        | An array of objects with a `mac` and at least one entry in `quick_clicks`. Used to create new quick clicks for a lock. |
+| `revoke`       | An array of objects with a `mac` and at least one entry in `quick_clicks`. Used to remove existing quick clicks from a lock. |
+| `display`      | Used to filter quick clicks included in the response.  By default, no filter is applied. |
+| `quick_clicks` | An array of objects containing a `code` string and `uses` integer. |
+| `mac`          | A single lock mac address.                                   |
+| `macs`         | An array of mac addresses that can be used as a `display` filter. |
+| `code`         | A string consisting of 1's and 0's. The length of the string must be between 3-24 characters. |
+| `uses`         | An integer between 1-255. Represents the total available uses of a quick_click. A value of 255 is an unlimited use quick click. |
+
+#### EXAMPLE RESPONSE
+
+```json
+{
+    "result": "success",
+    "message": "Command successfully completed",
+    "error_code": 0,
+    "data":  [
+        {
+            "mac": "XX:XX:XX:XX:XX",
+            "quick_clicks": [
+                {
+                    "code": "101",
+                    "pending": true,
+                    "revoked": false,
+                    "uses": 255
+                },
+                {
+                    "code": "010",
+                    "pending": true,
+                    "revoked": false,
+                    "uses": 10
+                }
+            ]
+        },
+        {
+            "mac": "XX:XX:XX:XX:XY",
+            "quick_clicks": [
+                {
+                    "code": "101",
+                    "pending": false,
+                    "revoked": true,
+                    "uses": 255
+                }
+            ]
+        }
+    ]
+    "request": "qc"
+}
+```
+
+| Parameter          | Description                                                  |
+| ------------------ | ------------------------------------------------------------ |
+| ```result```       | String value representing the result of the call. Either ```success``` or ```failure``` |
+| ```message```      | Readable description of the error                            |
+| ```error_code```   | Int value of the error thrown                                |
+| ```data```         | Array of quick click states                                  |
+| ```mac```          | Mac address of the lock                                      |
+| ```quick_clicks``` | Array of quick clicks belonging to a specific lock           |
+| ```code```         | The code used to unlock the given lock                       |
+| ```uses```         | The total number of uses for a quick click code              |
+| ```pending```      | A Boolean flag; when `true` the given quick click will be added to the lock in the next online unlock |
+| ```revoked```      | A Boolean flag; when `true` the given quick click will be removed from the lock in the next online unlock |
+| ```request```      | Name of the request                                          |
