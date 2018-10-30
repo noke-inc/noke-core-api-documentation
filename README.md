@@ -160,6 +160,11 @@ Used to unlock a lock. Requires a session string from the lock (*see [Nokē Mobi
 |```commands``` | A string of commands sent to the lock by the [Nokē Mobile library](https://github.com/noke-inc/noke-mobile-library-ios)|
 |```request``` | Name of the request|
 
+###  ``` POST  /unshackle/ ```
+
+Used to remove the shackle from an HD padlock. Operates identically to the ```/unlock/``` endpoint.  Please see [above](https://github.com/noke-inc/noke-core-api-documentation#post--unlock) for more details. 
+
+
 ### ``` POST /keys/ ```
 
 Used to request offline keys for a lock or locks, invalidate any existing keys, or view the status of any offline keys.  These offline keys can be used by the mobile libraries to unlock the lock without an active network connection (*see [Nokē Mobile library documentation](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*).
