@@ -133,7 +133,7 @@ Used to unlock a lock. Requires a session string from the lock (*see [Nokē Mobi
 ```json
 {
     "mac": "XX:XX:XX:XX:XX:XX",
-    "session": "8675309j3nNy1V3G0ty0uRnUMB3r",
+    "session": "0000040ba7b0d91f7f45ad25698a18375c7e4f16",
     "tracking_key": "bob@gmail.com"
 }
 ```
