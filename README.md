@@ -720,8 +720,6 @@ Quick clicks are created and removed via the API and are synced with a lock when
 | ```pending```      | A Boolean flag; when `true` the given quick click will be added to the lock in the next online unlock |
 | ```revoked```      | A Boolean flag; when `true` the given quick click will be removed from the lock in the next online unlock |
 | ```request```      | Name of the request                                          |
-<<<<<<< HEAD
-
 
 
 ##  Firmware Update
@@ -795,5 +793,4 @@ Once the Noke device is in firmware update mode, the firmware can now be updated
 Please follow the instructions provided by Nordic to implement their library into your mobile application. The DFU library is available for [iOS](https://github.com/NordicSemiconductor/IOS-Pods-DFU-Library) and [Android](https://github.com/NordicSemiconductor/Android-DFU-Library)
 
 **Note**: The firmware files needed are currently not available to the public. To get the firmware file needed to update a Noke device, please contact a member of the Noke development team.
-=======
->>>>>>> 5020e1b91df7559e8facca80ba1e7b74f98e8ea7
+
