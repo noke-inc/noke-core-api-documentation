@@ -786,7 +786,7 @@ Used to place a Noke device into firmware update mode. Requires a session string
 |```request``` | Name of the request|
 
 
-###Sending the Firmware file to the Noke Device
+### Sending the Firmware file to the Noke Device
 
 Once the Noke device is in firmware update mode, the firmware can now be updated by sending it a new firmware file. Noke devices use a chip provided by **Nordic Semiconductor**, therefore we've found that the best way to send a firmware file is to use the DFU library provided by Nordic.
 
