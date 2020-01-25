@@ -133,7 +133,7 @@ Used to unlock a lock. Requires a session string from the lock (*see [Nokē Mobi
 ```json
 {
     "mac": "XX:XX:XX:XX:XX:XX",
-    "session": "8675309j3nNy1V3G0ty0uRnUMB3r",
+    "session": "0000040ba7b0d91f7f45ad25698a18375c7e4f16",
     "tracking_key": "bob@gmail.com"
 }
 ```
@@ -583,8 +583,8 @@ Used to view human-readable activity logs. Can find specific activity logs via f
 |```lock_mac``` | Mac address of the lock|
 |```action``` | Action type of the log (ie: unlocked, locked)|
 |```recorded_time``` | Date that the log was received by the mobile device|
-|```range_date_start``` | If the exact time is not known (offline unlock or quick-click) this is the known earliest date the event could have occured|
-|```range_date_end``` | If the exact time is not known (offline unlock or quick-click) this is the known latest date the event could have occured|
+|```range_date_start``` | If the exact time is not known (offline unlock or quick-click) this is the known earliest date the event could have occurred|
+|```range_date_end``` | If the exact time is not known (offline unlock or quick-click) this is the known latest date the event could have occurred|
 |```tracking_key``` | A string sent up on the unlock endpoint that can be used to associate activity|
 |```request``` | Name of the request|
 
@@ -720,6 +720,7 @@ Quick clicks are created and removed via the API and are synced with a lock when
 | ```pending```      | A Boolean flag; when `true` the given quick click will be added to the lock in the next online unlock |
 | ```revoked```      | A Boolean flag; when `true` the given quick click will be removed from the lock in the next online unlock |
 | ```request```      | Name of the request                                          |
+<<<<<<< HEAD
 
 
 
@@ -794,3 +795,5 @@ Once the Noke device is in firmware update mode, the firmware can now be updated
 Please follow the instructions provided by Nordic to implement their library into your mobile application. The DFU library is available for [iOS](https://github.com/NordicSemiconductor/IOS-Pods-DFU-Library) and [Android](https://github.com/NordicSemiconductor/Android-DFU-Library)
 
 **Note**: The firmware files needed are currently not available to the public. To get the firmware file needed to update a Noke device, please contact a member of the Noke development team.
+=======
+>>>>>>> 5020e1b91df7559e8facca80ba1e7b74f98e8ea7
