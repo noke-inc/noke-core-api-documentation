@@ -10,9 +10,9 @@ The Nokē Core API is a quick and simple way to integrate Nokē products with yo
   * [POST /unshackle/](#post-unshackle)
   * [POST /keys/](#post-keys)
   * [Quick Clicks](#quick-clicks)
-    * [POST /qc/issue/](#post-qc-issue)
-    * [POST /qc/revoke/](#post-qc-revoke)
-    * [POST /qc/display/](#post-qc-display)
+    * [POST /qc/issue/](#post-qcissue)
+    * [POST /qc/revoke/](#post-qcrevoke)
+    * [POST /qc/display/](#post-qcdisplay)
     * [POST /qc/](#post-qc)
 * [Activity](#activity)
   * [POST /upload/](#post-upload)*
