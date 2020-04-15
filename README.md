@@ -6,7 +6,7 @@ The Nokē Core API is a quick and simple way to integrate Nokē products with yo
 
 * [Locks](#locks)
   * [POST /lock/](#post-lock)
-  * [POST /unlock/](#post-unlock)
+  * [POST /unlock/](#post-unlock)*
   * [POST /unshackle/](#post-unshackle)
   * [POST /keys/](#post-keys)
   * [Quick Clicks](#quick-clicks)
@@ -15,15 +15,17 @@ The Nokē Core API is a quick and simple way to integrate Nokē products with yo
     * [POST /qc/display/](#post-qc-display)
     * [POST /qc/](#post-qc)
 * [Activity](#activity)
-  * [POST /upload/](#post-upload)
+  * [POST /upload/](#post-upload)*
   * [POST /activity](#post-activity)
 * [API Versions](#api-versions)
 * [Firmware Update](#firmware-update)
   * [POST /fwupdate/](#post-fwupdate)
 
-##  Locks
+ \* these two calls should be implemented first and of these two /unlock/ is most critical.
+
+## Locks
 ---
-### ``` POST /lock/ ```
+### ```POST /lock/```
 
 Used to view information about locks. Supports finding a single lock, multiple locks, or all locks associated with a company. Also supports finding locks by serial number or by both mac or serial number. At least one array must be present but both maybe included. Locks that fit either array will be returned.
 
@@ -31,7 +33,7 @@ Used to view information about locks. Supports finding a single lock, multiple l
 #### HEADERS
 
 
-|  Key | Value  |
+|Key|Value|
 |--|--|
 |Content-Type | application/json  |
 |Authorization | Bearer *api_key* |
@@ -126,7 +128,7 @@ Used to view information about locks. Supports finding a single lock, multiple l
 <br/>
 
 ---
-### ``` POST  /unlock/ ```
+### ```POST /unlock/```
 
 Used to unlock a lock. Requires a session string from the lock (*see [Nokē Mobile library documentation](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*), a mac address, and can optionally take a tracking key to associate to lock activity. 
 
@@ -182,7 +184,7 @@ Used to unlock a lock. Requires a session string from the lock (*see [Nokē Mobi
 <br/>
 
 ---
-### ``` POST  /unshackle/ ```
+### ```POST /unshackle/```
 
 Used to remove the shackle from an HD padlock. Operates identically to the ```/unlock/``` endpoint.  Please see [above](#post-unlock) for more details. 
 
@@ -191,7 +193,7 @@ Used to remove the shackle from an HD padlock. Operates identically to the ```/u
 <br/>
 
 ---
-### ``` POST /keys/ ```
+### ```POST /keys/```
 
 Used to request offline keys for a lock or locks, invalidate any existing keys, or view the status of any offline keys.  These offline keys can be used by the mobile libraries to unlock the lock without an active network connection (*see [Nokē Mobile library documentation](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*).
 
@@ -496,7 +498,7 @@ Input (revoke all keys for tracking key/keys)
 <br/>
 
 ---
-### ```Quick Clicks ```
+### ```Quick Clicks```
 
 Used to issue quick clicks for a lock or locks, revoke existing quick clicks, or view the status of any active quick clicks.  Quick clicks can be used to unlock the lock without additional hardware. 
 
@@ -518,7 +520,7 @@ Quick clicks are created and removed via the API and are synced with a lock when
 * Quick click codes must be between 3 to 24 characters
 * Quick click's can have a limited use count between 1-254 uses OR may be unlimited use represented by a use count of 255
 
-#### ``` POST /qc/issue/ ```
+#### ```POST /qc/issue/```
 
 Used to issue quick clicks for a lock. This can either be to issue a new code or to update the number of times an existing code can be used.
 
@@ -639,7 +641,7 @@ Mixed Success and Failure (version >= 1.0.0)
 <br/>
 
 ---
-#### ``` POST /qc/revoke/ ```
+#### ```POST /qc/revoke/```
 
 Used to revoke quick clicks from a lock. This is request is very similar to an issue request, just the uses field is not required. The response is identical.
 
@@ -663,7 +665,7 @@ Used to revoke quick clicks from a lock. This is request is very similar to an i
 <br/>
 
 ---
-#### ``` POST /qc/display/ ```
+#### ```POST /qc/display/```
 
 Used to view information about the quick clicks for the given locks. If no macs are included in the request ALL quick clicks for ALL locks will be returned.
 
@@ -743,7 +745,7 @@ The response parameters are the same as for [/qc/issue/](#post-qc-issue), but th
 <br/>
 
 ---
-#### ``` POST /qc/ ```
+#### ```POST /qc/```
 
 Used to request all three quick click action types in one call. This request can contain issues and revokes, but will always be treated as a display call. This is because if no macs are included in the request for display, it will default to displaying ALL quick clicks for ALL locks. This has been the case in the past, but may have been a source of confusion. Also as a result of this, it is impossible to return information about successful issues and revokes in this combined call, but error-details will still contain details about failures.
 
@@ -819,11 +821,10 @@ The request parameters are the same as for the requests above except that for is
 <br/>
 <br/>
 
-##  Activity
+## Activity
 
 ---
-###  ``` POST  /upload/ ``` 
-
+### ```POST /upload/```
 
 Used to upload lock activity logs from a phone app using the  *Nokē Mobile library*. Requires a session string from the lock (*see [Nokē Mobile library documentation](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*), a mac address, and can optionally take a tracking key to associate to lock activity. 
 
@@ -860,7 +861,7 @@ Used to upload lock activity logs from a phone app using the  *Nokē Mobile libr
 <br/>
 
 ---
-###  ``` POST  /activity/ ``` 
+### ```POST /activity/```
 
 Used to view human-readable activity logs. Can find specific activity logs via filters or can be used to find the most recent activity for a company. Use as many or as few filters to narrow down specific activity data.
 
@@ -873,7 +874,15 @@ Used to view human-readable activity logs. Can find specific activity logs via f
 
 #### BODY
 
-###### All activity
+|Filter Parameter|Description|
+|--|--|
+|```lock_macs``` | An array of MAC addresses for locks to return activity for|
+|```actions``` | An array of activity actions to return: ```alarm_triggered```, ```button_touched```, ```failed_unlock```, ```locked```, ```proximity_stats```, ```setup_unlocked```, ```start_up```, ```unknown```, ```unlock_via_access_code```, ```unlocked```, ```unlocked_via_quick_click```, ```wake_stats```. By default button_touched, proximity_stats, and wake_stats activity is excluded.|
+|```tracking_keys``` | An array of tracking ids to return activity for|
+|```before``` | A datetime (YYYY-MM-DDThh:mm:ssZ) specifying the latest activity to return.|
+|```after``` | A datetime specifying the earliest activity to return.|
+
+##### All activity (except excluded activity actions)
 
 ```json
 {
@@ -881,7 +890,7 @@ Used to view human-readable activity logs. Can find specific activity logs via f
 }
 ```
 
-###### Filtered
+##### Filtered
 
 ```json
 {
@@ -956,7 +965,7 @@ Used to view human-readable activity logs. Can find specific activity logs via f
 
 
 
-##  API Versions
+## API Versions
 
 While we try to make most changes to the API backwards-compatible this is not always the case. In order to keep from breaking client code we have implemented semantic versions to identify the features/changes made to the API.
 
@@ -1030,7 +1039,7 @@ Input
 
 
 
-##  Firmware Update
+## Firmware Update
 
 Updating the firmware on a Noke device is a two-step process:
 
@@ -1041,7 +1050,7 @@ Updating the firmware on a Noke device is a two-step process:
 
 To place a Noke device into firmware update mode, make a request to the ```fwupdate``` endpoint. This endpoint functions similarly to the ```unlock/``` endpoint, but instead of unlocking the lock, returns a command that places the lock into firmware update mode.
 
-###  ``` POST  /fwupdate/ ```
+### ```POST /fwupdate/```
 
 
 Used to place a Noke device into firmware update mode. Requires a session string from the lock (*see [Nokē Mobile library documentation](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*), and a mac address
