@@ -635,6 +635,7 @@ Mixed Success and Failure (version >= 1.0.0)
 |```>>start_uses```| Total number of times the code was set to be used|
 |```request``` | Name of the request|
 |```api_version``` | Current information about API versions ([see section on API versions](#api-versions))|
+
 [back to top](#overview)
 
 <br/>
@@ -659,6 +660,7 @@ Used to revoke quick clicks from a lock. This is request is very similar to an i
 |```mac``` | A mac address from a lock|
 |```quick_clicks``` | An array of quick clicks to revoke (identified by the code)|
 |```>code``` | A series of 1's and 0's representing the quick click code|
+
 [back to top](#overview)
 
 <br/>
