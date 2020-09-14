@@ -21,7 +21,7 @@ The Nokē Core API is a quick and simple way to integrate Nokē products with yo
 * [Firmware Update](#firmware-update)
   * [POST /fwupdate/](#post-fwupdate)
 
- \* these two calls should be implemented first and of these two /unlock/ is most critical.
+ \* these two calls should be implemented first and of these two /unlock/ is most critical. After sending an unlock cmd (received from the API) to a lock you will receive a response from the lock. This response should ALWAYS be sent to the server via the /upload endpoint. Failure to do so can cause problems, especially when unlocking the lock for the first time. 
 
 ## Locks
 ---
