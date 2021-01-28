@@ -14,6 +14,11 @@ The Nokē Core API is a quick and simple way to integrate Nokē products with yo
     * [POST /qc/revoke/](#post-qcrevoke)
     * [POST /qc/display/](#post-qcdisplay)
     * [POST /qc/](#post-qc)
+* [Fobs](#fobs)
+  * [POST /fobs/issue](#post-fobsissue)
+  * [POST /fobs/revoke](#post-fobsrevoke)
+  * [POST /fobs/display](#post-fobsdisplay)
+  * [POST /fobs/sync](#post-fobssync)
 * [Activity](#activity)
   * [POST /upload/](#post-upload)*
   * [POST /activity](#post-activity)
@@ -21,7 +26,11 @@ The Nokē Core API is a quick and simple way to integrate Nokē products with yo
 * [Firmware Update](#firmware-update)
   * [POST /fwupdate/](#post-fwupdate)
 
- \* these two calls should be implemented first and of these two /unlock/ is most critical. After sending an unlock cmd (received from the API) to a lock you will receive a response from the lock. This response should ALWAYS be sent to the server via the /upload endpoint. Failure to do so can cause problems, especially when unlocking the lock for the first time. 
+ \* Before testing any code against actual locks, make sure that you mobile api key is set in the Nokē Mobile library. Also, make sure to implement the unlock call first as it also handles lock setup. If these two steps aren't done in the order specified there is the potential for losing lock keys which can result in bricked locks.
+
+<br/>
+<br/>
+<br/>
 
 ## Locks
 ---
@@ -823,6 +832,331 @@ The request parameters are the same as for the requests above except that for is
 <br/>
 <br/>
 
+## Fobs
+
+Fobs can be used to open locks without a mobile device and particularly useful when a mobile connection is not available. When a fob is brought near a lock and both are awoken (by touching the lock button and pressing the fob) The fob will connect to the lock and provide the proper command and keys to unlock the lock (assuming the fob has credentials for the lock). The commands in this sections enable management of the locks a fob has credentials for and the synchronizing of these credentials to the fob. 
+
+---
+### ```POST /fobs/issue/```
+
+Used to set which lock or locks the fob should be able to unlock.
+
+#### HEADERS
+
+|  Key | Value  |
+|--|--|
+|Content-Type | application/json  |
+|Authorization | Bearer *api_key* |
+
+##### BODY
+
+|Parameter|Description|
+|--|--|
+|```fob_mac``` | A mac address for a fob|
+|```locks``` | An array of locks to create or update|
+|```>mac``` | A mac address for a lock|
+|```>tracking_key``` | Identifying string used to track activity and revoke lock credentials from a fob|
+
+###### EXAMPLE REQUEST
+
+```json
+{
+    "fob_mac": "ZZ:ZZ:XX:XX:XX:XX",
+    "locks":[
+        {	
+            "mac": "XX:XX:XX:XX:XX:XX",
+            "tracking_key": "BobFob"
+        },
+        {
+            "mac": "YY:YY:YY:YY:YY:YY",
+            "tracking_key": "JaneChain"
+        }
+    ]
+}
+```
+##### EXAMPLE RESPONSES
+
+Success
+```json
+{
+   "result": "success",
+   "message": "Command successfully completed",
+   "error_code": 0,
+   "error_details": [],
+   "data": [
+      {
+         "fob": "ZZ:ZZ:XX:XX:XX:XX",
+         "locks": [
+            {
+               "mac": "XX:XX:XX:XX:XX:XX",
+               "tracking_key": "BobFob",
+               "offline_key": "...",
+               "unlock_command": "...",
+               "status": "synced"
+            },
+            {
+               "mac": "YY:YY:YY:YY:YY:YY",
+               "tracking_key": "JaneChain",
+               "offline_key": "...",
+               "unlock_command": "...",
+               "status": "pending"
+            }
+         ]
+      }
+   ],
+   "request": "fobs/issue",
+   "api_version": { ... }
+}
+```
+
+|Parameter|Description|
+|--|--|
+|```result``` | String value representing the result of the call. Either ```success``` or ```failure```|
+|```message``` | Readable description of the error|
+|```error_code``` | Int value of the error thrown|
+|```error_details``` | A list of errors encountered. This is particularly useful if multiple locks are issued and some fail while others succeed. |
+|```data``` | A list of successful quick click creations/updates.|
+|```>fob```| The mac address of the fob with a success|
+|```>locks```| A List of successful locks added|
+|```>>mac```| The mac address of the lock|
+|```>>tracking_key```| The tracking_key for the lock/fob pair|
+|```>>offline_key```| The encrypted key for unlocking the lock|
+|```>>unlock_command```| The unlock command to send to the lock|
+|```>>status```| The status of the credentials on the fob|
+|```request``` | Name of the request|
+|```api_version``` | Current information about API versions ([see section on API versions](#api-versions))|
+
+
+[back to top](#overview)
+<br/>
+<br/>
+
+
+### ```POST /fobs/revoke/```
+
+Used to remove a lock or locks from a fob which it shouldn't be able to unlock.
+
+#### HEADERS
+
+|  Key | Value  |
+|--|--|
+|Content-Type | application/json  |
+|Authorization | Bearer *api_key* |
+
+##### BODY
+
+|Parameter|Description|
+|--|--|
+|```fob_mac``` | A mac address for a fob|
+|```lock_macs``` | (optional) Mac address of a lock to remove from a fob|
+|```tracking_keys``` | (optional) Identifying string used to track activity and revoke lock credentials from a fob|
+
+###### EXAMPLE REQUEST
+
+```json
+{
+	"fob_mac":"ZZ:ZZ:XX:XX:XX:XX",
+	"tracking_keys": [
+		"my-lock-tracking-key"
+	]
+}
+```
+##### EXAMPLE RESPONSES
+
+Success
+```json
+{
+   "result": "success",
+   "message": "Command successfully completed",
+   "error_code": 0,
+   "error_details": [],
+   "data": [
+      {
+         "fob": "ZZ:ZZ:XX:XX:XX:XX",
+         "locks": [
+            {
+               "mac": "XX:XX:XX:XX:XX:XX",
+               "tracking_key": "BobFob",
+               "offline_key": "...",
+               "unlock_command": "...",
+               "status": "synced"
+            },
+            {
+               "mac": "XX:XX:XX:XX:XX:YY",
+               "tracking_key": "my-lock-tracking-key",
+               "offline_key": "...",
+               "unlock_command": "...",
+               "status": "revoke_pending"
+            }
+         ]
+      }
+   ],
+   "request": "fobs/revoke",
+   "api_version": { ... }
+}
+```
+
+|Parameter|Description|
+|--|--|
+|```result``` | String value representing the result of the call. Either ```success``` or ```failure```|
+|```message``` | Readable description of the error|
+|```error_code``` | Int value of the error thrown|
+|```error_details``` | A list of errors encountered. This is particularly useful if multiple locks are issued and some fail while others succeed. |
+|```data``` | A list of successful quick click creations/updates.|
+|```>fob```| The mac address of the fob with a success|
+|```>locks```| A List of successful locks added|
+|```>>mac```| The mac address of the lock|
+|```>>tracking_key```| The tracking_key for the lock/fob pair|
+|```>>offline_key```| The encrypted key for unlocking the lock|
+|```>>unlock_command```| The unlock command to send to the lock|
+|```>>status```| The status of the credentials on the fob|
+|```request``` | Name of the request|
+|```api_version``` | Current information about API versions ([see section on API versions](#api-versions))|
+
+
+[back to top](#overview)
+<br/>
+<br/>
+
+
+### ```POST /fobs/display/```
+
+Used to display fobs and the locks they can open.
+
+#### HEADERS
+
+|  Key | Value  |
+|--|--|
+|Content-Type | application/json  |
+|Authorization | Bearer *api_key* |
+
+##### BODY
+
+|Parameter|Description|
+|--|--|
+|```fob_macs``` | An array mac addresses for fobs to be displayed|
+
+###### EXAMPLE REQUEST
+
+```json
+{
+	"fob_macs":[
+        "ZZ:ZZ:XX:XX:XX:XX"
+	]
+}
+```
+##### EXAMPLE RESPONSES
+
+Success
+```json
+{
+   "result": "success",
+   "message": "Command successfully completed",
+   "error_code": 0,
+   "error_details": [],
+   "data": [
+      {
+         "fob": "ZZ:ZZ:XX:XX:XX:XX",
+         "locks": [
+            {
+               "mac": "XX:XX:XX:XX:XX:XX",
+               "tracking_key": "BobFob",
+               "offline_key": "...",
+               "unlock_command": "...",
+               "status": "pending"
+            }
+         ]
+      }
+   ],
+   "request": "fobs/display",
+   "api_version": { ... }
+}
+```
+
+|Parameter|Description|
+|--|--|
+|```result``` | String value representing the result of the call. Either ```success``` or ```failure```|
+|```message``` | Readable description of the error|
+|```error_code``` | Int value of the error thrown|
+|```error_details``` | A list of errors encountered. This is particularly useful if multiple locks are issued and some fail while others succeed. |
+|```data``` | A list of successful quick click creations/updates.|
+|```>fob```| The mac address of the fob with a success|
+|```>locks```| A List of successful locks added|
+|```>>mac```| The mac address of the lock|
+|```>>tracking_key```| The tracking_key for the lock/fob pair|
+|```>>offline_key```| The encrypted key for unlocking the lock|
+|```>>unlock_command```| The unlock command to send to the lock|
+|```>>status```| The status of the credentials on the fob|
+|```request``` | Name of the request|
+|```api_version``` | Current information about API versions ([see section on API versions](#api-versions))|
+
+
+[back to top](#overview)
+<br/>
+<br/>
+
+
+### ```POST /fobs/sync/```
+
+Used to update a fob. Requires a session string from the lock (*see [Nokē Mobile library documentation](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*). In general usage, the user will start the app then squeeze the fob. Once the app recognizes the fob and connects it can call /fobs/sync/ and then send the returned commands to the fob.
+
+#### HEADERS
+
+|  Key | Value  |
+|--|--|
+|Content-Type | application/json  |
+|Authorization | Bearer *api_key* |
+
+##### BODY
+
+|Parameter|Description|
+|--|--|
+|```fob_mac``` | A mac address for a fob|
+|```session``` | Unique session generated by the lock and read by the phone when connecting. (see Nokē Mobile library documentation)|
+
+###### EXAMPLE REQUEST
+
+```json
+{
+	"fob_mac":"ZZ:ZZ:XX:XX:XX:XX",
+    "session": "0000040ba7b0d91f7f45ad25698a18375c7e4f16"
+}
+```
+##### EXAMPLE RESPONSES
+
+Success
+```json
+{
+   "result": "success",
+   "message": "Command successfully completed",
+   "error_code": 0,
+   "error_details": [],
+   "data": {
+       "commands": "00000200390506ead84ca108c49b1b21ee4dfa2a+00001f025725dd1d3100012ee2375bcf6d8aaa6a+00001f01c281d08c8c66e43f5bd91978a8d865c4+02001f002fd4fc4c33e11be2b626d71528891a0a"
+   },
+   "request": "fobs/display",
+   "api_version": { ... }
+}
+```
+
+|Parameter|Description|
+|--|--|
+|```result``` | String value representing the result of the call. Either ```success``` or ```failure```|
+|```message``` | Readable description of the error|
+|```error_code``` | Int value of the error thrown|
+|```error_details``` | A list of errors encountered. This is particularly useful if multiple locks are issued and some fail while others succeed. |
+|```data``` | A list of successful quick click creations/updates.|
+|```>commands``` | A string of commands sent to the fob by the [Nokē Mobile library](https://github.com/noke-inc/noke-mobile-library-ios).|
+|```request``` | Name of the request|
+|```api_version``` | Current information about API versions ([see section on API versions](#api-versions))|
+
+
+[back to top](#overview)
+<br/>
+<br/>
+
+
+
 ## Activity
 
 ---
@@ -831,7 +1165,9 @@ The request parameters are the same as for the requests above except that for is
 Used to upload lock activity logs from a phone app using the  *Nokē Mobile library*. Requires a session string from the lock (*see [Nokē Mobile library documentation](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*), a mac address, and can optionally take a tracking key to associate to lock activity. 
 
 
-**NOTE:** this route uses a mobile api key rather than the server api key.
+**NOTE:** this route uses a mobile api key rather than the private api key.
+
+**NOTE:** also, this endpoint is called automatically by the Nokē Mobile library as long as the mobile api key is set
 
 
 #### HEADERS
