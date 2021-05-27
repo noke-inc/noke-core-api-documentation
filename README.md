@@ -26,7 +26,7 @@ The Nokē Core API is a quick and simple way to integrate Nokē products with yo
 * [Firmware Update](#firmware-update)
   * [POST /fwupdate/](#post-fwupdate)
 
- \* Before testing any code against actual locks, make sure that you mobile api key is set in the Nokē Mobile library. Also, make sure to implement the unlock call first as it also handles lock setup. If these two steps aren't done in the order specified there is the potential for losing lock keys which can result in bricked locks.
+ \* Before testing any code against actual locks, make sure that your mobile api key is set in the Nokē Mobile library. Also, make sure to implement the unlock call first as it also handles lock setup. If these two steps aren't done in the order specified there is the potential for losing lock keys which can result in bricked locks.
 
 <br/>
 <br/>
@@ -410,6 +410,8 @@ Input (limit by tracking key)
 |```api_version``` | Current information about API versions ([see section on API versions](#api-versions))|
 
 #### Revoke Keys
+
+When revoking keys please be aware that the revoked offline keys will still work on the lock until the lock is synced with the server during an online unlock event. In other words, if you are revoking an offline key to keep someone with that offline key from opening the lock it would be wise to go to the physcial lock and run an online unlock (via your app on an internet connected device) immediately after revoking the key. Additionally, if keys are reset on a lock the offline keys stored on a users device will no longer work on that lock, even if the user still has access to the lock in your database, until the offline keys on their device are re-synced.
 
 ##### HEADERS
 
@@ -834,7 +836,29 @@ The request parameters are the same as for the requests above except that for is
 
 ## Fobs
 
-Fobs can be used to open locks without a mobile device and particularly useful when a mobile connection is not available. When a fob is brought near a lock and both are awoken (by touching the lock button and pressing the fob) The fob will connect to the lock and provide the proper command and keys to unlock the lock (assuming the fob has credentials for the lock). The commands in this sections enable management of the locks a fob has credentials for and the synchronizing of these credentials to the fob. 
+Fobs can be used to open locks without a mobile device and are particularly useful when a mobile connection is not available. When a fob is brought near a lock and both are awoken (by touching the lock button and pressing the fob) The fob will connect to the lock and provide the proper command and keys to unlock the lock (assuming the fob has credentials for the lock). The commands in this section enable management of the locks a fob has credentials for and the synchronizing of these credentials to the fob. 
+
+Essentially, a fob is a storage device for offline keys. They use the same set of available keys on the lock though not the same individual keys. This means that the combined total number of offline keys and fob keys is 100. It also means that the caveats that apply to offline keys also apply to fobs. 
+
+When revoking keys on a lock (the /keys revoke API call) please be aware that any of those removed keys that are stored on a fob will still work on the lock until the lock is synced with the server during an online unlock event. In other words, if you are revoking an offline key to keep someone with a fob with that offline key from opening the lock it would be wise to go to the physcial lock and run an online unlock (via your app on an internet connected device) immediately after revoking the key. Additionally, if keys are reset and synced on a lock, corresponding fobs will no longer work on that lock, even if the user still has access to the lock in your database, until their fob is re-synced.
+
+Also be aware that when a lock is revoked from a fob this will also reset the associated key on the lock. If this were not done whoever had the fob would still be able to open the lock as long as they didn't get the fob re-synced. Thus when revoking a lock from a fob should also immediately re-sync the lock as in the previous paragraph.
+
+For example suppose a lock has three keys A, B, and C. Also suppose that user Alice was issued an offline key on her phone using key A. She was also issued a fob with access to the same lock using key B. User Bob was also issued a fob using key C. Also suppose that Alice's phone can't access the internet while near the lock. 
+
+Now consider this timeline:
+
+| Chronological Events                                    | Alice with offline phone (key A) | Alice with fob (key B) | Bob with fob (key C) | Bob with online phone 
+| ------------------------------------------------------  | -------------------------------- | ---------------------- | -------------------- | --------------------- 
+| starting state                                          | lock opens                       | lock opens             | lock opens           | lock opens            
+| /keys revoke A                                          | lock opens                       | lock opens             | lock opens           | lock opens            
+| tech unlocks the lock with online phone (online unlock) | access denied                    | lock opens             | lock opens           | lock opens
+| /fobs/revoke lock                                       | access denied                    | lock opens             | lock opens           | lock opens       
+| tech does online unlock                                 | access denied                    | access denied          | lock opens           | lock opens
+| lock reset (values of keys A, B , and C changed)        | access denied                    | access denied          | lock opens           | lock opens
+| tech does online unlock                                 | access denied                    | access denied          | access denied        | lock opens
+| /fobs/sync for Alice                                    | access denied                    | access denied          | access denied        | lock opens
+| /fobs/sync for Bob                                      | access denied                    | access denied          | lock opens           | lock opens
 
 ---
 ### ```POST /fobs/issue/```
