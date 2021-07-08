@@ -23,7 +23,7 @@ The Nokē Core API is a quick and simple way to integrate Nokē products with yo
   * [POST /upload/](#post-upload)*
   * [POST /activity](#post-activity)
 * [API Versions](#api-versions)
-* [Firmware Update](#firmware-update)
+* [Firmware Update](#firmware-update-mode)
   * [POST /fwupdate/](#post-fwupdate)
 
  \* Before testing any code against actual locks, make sure that your mobile api key is set in the Nokē Mobile library. Also, make sure to implement the unlock call first as it also handles lock setup. If these two steps aren't done in the order specified there is the potential for losing lock keys which can result in bricked locks.
