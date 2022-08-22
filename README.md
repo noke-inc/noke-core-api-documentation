@@ -59,6 +59,8 @@ It is **important** to know that these two servers DO NOT run against isolated d
 
 Also be aware that the pre-release servers may be updated at any time. Most of the time they will have the same code as the main servers, but DO NOT depend on this. 
 
+Finally, while the Nokē Mobile Library has the sandbox and production URLs built in (selected via Mode), it does not have the pre-release URLs built in. It is, therefore, necessary to set the URL specifically when using pre-release servers. *(As of 2022-08-22 the mobile libraries don't support this, but should soon)*.
+
 ### Server Values 
 | Use | Server | URL | Mode | Keys |
 | --- | -------| --- | ---- | ---- |
