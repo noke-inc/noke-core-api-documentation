@@ -4,6 +4,76 @@
 
 The Nokē Core API is a quick and simple way to integrate Nokē products with your existing software systems. This documentation covers the initial closed beta release. 
 
+If you've looked at the Nokē Mobile Library documentation (*[Android]((https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android)) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*) you may recognize the structure of the following diagram, but you'll also see some differences. This diagram represents a client with a server (which is the most common setup). It also includes more detail. 
+
+![Core API Architecture](core_api_diagram.png)
+
+The diagram shows four different types of data flow:
+* data management (pink)
+  * This includes client side functionality as well as most CoreAPI features such as issuing, revoking and displaying offline keys, fob, and quick click codes. It also represents listing locks and activity.
+* command requests (blue)
+  * This path includes all requests that return commands for directly interacting with a lock or fob: /unlock, /unshackle, /fob/sync, and /fwupdate. 
+* encrypted commands (green)
+  * This represents the responses to command requests. The result may include one or more commands that should be passed straight on to the lock or fob. 
+* lock responses (orange)
+  * This is the path by which a lock responds to commands. The response will include information for the client app to consume as well as information that the Nokē Mobile Library will pass straight to the Core API server.
+
+As you can see there are three phases to the command process. If there are failures in any of these phases, the full command process fails. In particular, the third phase (lock responses), are critical to maintaining lock state, but failures in this phase are easier to miss.
+
+The offline keys process straddles the two main pathways (data management, command path). The API calls for this feature are mostly for managing keys in the Core API database, but it does also return encrypted commands for sending to a lock. The difference here is that these commands won't be sent straight to the lock, but should be saved to send to the lock at a later time (for example, when there is no network connection for the primary command path).
+
+Please note that there are multiple Core API servers. Each one has a unique URL and set of API keys. It is the client's responsibility to make sure that the client app (via Nokē Mobile Library) and client server both connect to the same server and use the respective API keys. The Mode (SANDBOX/PRODUCTION) determines the URL used by the Nokē Mobile Library. The mobile API key must also be set in the Nokē Mobile Library in order for lock responses to the reach the Core API server. 
+
+The private API key and corresponding Core API URL should be used for all API requests made directly by the client.
+
+
+[back to top](#overview)
+<br/>
+<br/>
+
+## Integration
+
+New clients usually start integration with the sandbox server. You will receive a pair of API keys for that server and you should use the sandbox server during development. The sandbox server runs against a separate database from production. It also does not modify lock keys in order to protect the locks during development. Lock keys are generally unique and specific to each lock, but on sandbox they are generally all set to the default.
+
+We advise starting by setting the mode and mobile API key for the Nokē Mobile Library then proceeding with API call implementations with the /unlock call first. The /unlock call is also responsible for syncing any changes to the locks. In other words, if your were to implement quick click codes, but hadn't already implemented the /unlock call you would not be able to test your new quick click codes on an actual lock since they won't sync to the lock without the /unlock call.
+
+Once the client is satisfied with their integration with Core API we will help them migrate to the production server. This entails a few steps:
+* We create and send a new pair of API keys for the client to use on the production server. 
+* We will also send you the URL for the production server though it is listed below.
+* You will need to:
+  * change the Nokē Mobile Library Mode to PRODUCTION
+  * set the new mobile API key for Nokē Mobile Library to use
+  * change the private API key and URL for all other communication with Core API
+  * send us a list of any locks you wish to move from sandbox over to production
+    * you may also include other locks that need to be added to production but aren't already on sandbox
+    * in general, if you wish to move locks from Nokē Pro or other product to Core API production, please specify where it is coming from so that we can retrieve the proper keys for that lock.
+* We transfer the specified locks to the production database
+
+We suggest you keep using sandbox for future client-side development and testing. For this reason it is good to keep at least one lock in the sandbox environment. It is not advisable to move locks back and forth between Nokē products since the various databases are not guaranteed to have the correct lock keys. We can move them manually, but it isn't a convenient process and is currently somewhat error prone as most human processes are. 
+
+### Pre-Release Servers
+
+From time to time we update Core API either to fix bugs or add new features. When this happens we will roll out those changes to a pair of pre-release servers (one for sandbox and one for production) before rolling the changes out to the main servers. This allows clients the opportunity to test their code against the Core API changes to make sure we haven't broken something you depend on. After some period of time we then move the changes to the main servers.
+
+It is **important** to know that these two servers DO NOT run against isolated databases. The sandbox pre-release runs against the same database as sandbox. Same for production. This allows you to use your current database for testing, but also means that any changes made in pre-release will also be made to the corresponding live database.
+
+Also be aware that the pre-release servers may be updated at any time. Most of the time they will have the same code as the main servers, but DO NOT depend on this. 
+
+### Server Values 
+| Use | Server | URL | Mode | Keys |
+| --- | -------| --- | ---- | ---- |
+| development | sandbox | https://coreapi-sandbox.appspot.com/ | SANDBOX | sandbox keys |
+| live use | production | https://coreapi-beta.appspot.com/ | PRODUCTION | production keys |
+| beta testing w/development | sandbox pre-release | https://pre-release-dot-coreapi-sandbox.appspot.com/ | SANDBOX | sandbox keys |
+| beta testing w/production | production pre-release | https://pre-release-dot-coreapi-beta.appspot.com/ | PRODUCTION | production keys |
+
+
+[back to top](#overview)
+<br/>
+<br/>
+
+## API
+
 * [Locks](#locks)
   * [POST /lock/](#post-lock)
   * [POST /unlock/](#post-unlock)*
@@ -28,8 +98,6 @@ The Nokē Core API is a quick and simple way to integrate Nokē products with yo
 
  \* Before testing any code against actual locks, make sure that your mobile api key is set in the Nokē Mobile library. Also, make sure to implement the unlock call first as it also handles lock setup. If these two steps aren't done in the order specified there is the potential for losing lock keys which can result in bricked locks.
 
-<br/>
-<br/>
 <br/>
 
 ## Locks
@@ -139,7 +207,7 @@ Used to view information about locks. Supports finding a single lock, multiple l
 ---
 ### ```POST /unlock/```
 
-Used to unlock a lock. Requires a session string from the lock (*see [Nokē Mobile library documentation](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*), a mac address, and can optionally take a tracking key to associate to lock activity. 
+Used to unlock a lock. Requires a session string from the lock (*see Nokē Mobile library documentation [Android]((https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android)) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*), a mac address, and can optionally take a tracking key to associate to lock activity. 
 
 #### HEADERS
 
@@ -153,7 +221,7 @@ Used to unlock a lock. Requires a session string from the lock (*see [Nokē Mobi
 |Parameter|Description|
 |--|--|
 |```mac``` | The mac address of the lock|
-|```session```| Unique session generated by the lock and read by the phone when connecting. (*see [Nokē Mobile library documentation](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*)|
+|```session```| Unique session generated by the lock and read by the phone when connecting. (*see Nokē Mobile library documentation [Android]((https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android)) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*)|
 |```tracking_key``` | An optional string used to associate to lock activity|
 
 ```json
@@ -184,7 +252,7 @@ Used to unlock a lock. Requires a session string from the lock (*see [Nokē Mobi
 |```result``` | String value representing the result of the call. Either ```success``` or ```failure```|
 |```message``` | Readable description of the error|
 |```error_code``` | Int value of the error thrown|
-|```commands``` | A string of commands sent to the lock by the [Nokē Mobile library](https://github.com/noke-inc/noke-mobile-library-ios)|
+|```commands``` | A string of commands sent to the lock by the (*Nokē Mobile library documentation [Android]((https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android)) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*)|
 |```request``` | Name of the request|
 |```api_version``` | Current information about API versions ([see section on API versions](#api-versions))|
 
@@ -204,7 +272,7 @@ Used to remove the shackle from an HD padlock. Operates identically to the ```/u
 ---
 ### ```POST /keys/```
 
-Used to request offline keys for a lock or locks, invalidate any existing keys, or view the status of any offline keys.  These offline keys can be used by the mobile libraries to unlock the lock without an active network connection (*see [Nokē Mobile library documentation](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*).
+Used to request offline keys for a lock or locks, invalidate any existing keys, or view the status of any offline keys.  These offline keys can be used by the mobile libraries to unlock the lock without an active network connection (*see Nokē Mobile library documentation [Android]((https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android)) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*).
 
 #### Issue Keys
 
@@ -758,7 +826,7 @@ The response parameters are the same as for [/qc/issue/](#post-qc-issue), but th
 <br/>
 
 ---
-#### ```POST /qc/```
+#### ```POST /qc/``` *deprecated*
 
 Used to request all three quick click action types in one call. This request can contain issues and revokes, but will always be treated as a display call. This is because if no macs are included in the request for display, it will default to displaying ALL quick clicks for ALL locks. This has been the case in the past, but may have been a source of confusion. Also as a result of this, it is impossible to return information about successful issues and revokes in this combined call, but error-details will still contain details about failures.
 
@@ -1122,7 +1190,7 @@ Success
 
 ### ```POST /fobs/sync/```
 
-Used to update a fob. Requires a session string from the lock (*see [Nokē Mobile library documentation](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*). In general usage, the user will start the app then squeeze the fob. Once the app recognizes the fob and connects it can call /fobs/sync/ and then send the returned commands to the fob.
+Used to update a fob. Requires a session string from the lock (*see Nokē Mobile library documentation [Android]((https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android)) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*). In general usage, the user will start the app then squeeze the fob. Once the app recognizes the fob and connects it can call /fobs/sync/ and then send the returned commands to the fob.
 
 #### HEADERS
 
@@ -1170,7 +1238,7 @@ Success
 |```error_code``` | Int value of the error thrown|
 |```error_details``` | A list of errors encountered. This is particularly useful if multiple locks are issued and some fail while others succeed. |
 |```data``` | A list of successful quick click creations/updates.|
-|```>commands``` | A string of commands sent to the fob by the [Nokē Mobile library](https://github.com/noke-inc/noke-mobile-library-ios).|
+|```>commands``` | A string of commands sent to the fob via the Nokē Mobile library [Android]((https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android)) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios).|
 |```request``` | Name of the request|
 |```api_version``` | Current information about API versions ([see section on API versions](#api-versions))|
 
@@ -1185,13 +1253,13 @@ Success
 
 ---
 ### ```POST /upload/```
+**DON'T CALL THIS ENDPOINT** <br/>
+*The Nokē Mobile library documentation calls this automatically when a response comes back to the app. This description is included for informational purposes.*
 
-Used to upload lock activity logs from a phone app using the  *Nokē Mobile library*. Requires a session string from the lock (*see [Nokē Mobile library documentation](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*), a mac address, and can optionally take a tracking key to associate to lock activity. 
+Used to upload lock activity logs from a phone app using the  *Nokē Mobile library*. Requires a session string from the lock (*see Nokē Mobile library documentation [Android]((https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android)) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*), a mac address, and can optionally take a tracking key to associate to lock activity. 
 
 
-**NOTE:** this route uses a mobile api key rather than the private api key.
-
-**NOTE:** also, this endpoint is called automatically by the Nokē Mobile library as long as the mobile api key is set
+**NOTE:** The Nokē Mobile library will need a mobile API key and the proper mode set for lock activity to reach the server. See the Nokē Mobile library documentation above for more info.
 
 
 #### HEADERS
@@ -1415,7 +1483,7 @@ To place a Noke device into firmware update mode, make a request to the ```fwupd
 ### ```POST /fwupdate/```
 
 
-Used to place a Noke device into firmware update mode. Requires a session string from the lock (*see [Nokē Mobile library documentation](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*), and a mac address
+Used to place a Noke device into firmware update mode. Requires a session string from the lock (*see Nokē Mobile library documentation [Android]((https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android)) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*), and a mac address
 
 
 #### HEADERS
@@ -1432,7 +1500,7 @@ Used to place a Noke device into firmware update mode. Requires a session string
 |Parameter|Description|
 |--|--|
 |```mac``` | The mac address of the lock|
-|```session```| Unique session generated by the lock and read by the phone when connecting. (*see [Nokē Mobile library documentation](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*)|
+|```session```| Unique session generated by the lock and read by the phone when connecting. (*see Nokē Mobile library documentation [Android]((https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android)) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*)|
 
 ```json
 {
@@ -1461,7 +1529,7 @@ Used to place a Noke device into firmware update mode. Requires a session string
 |```result``` | String value representing the result of the call. Either ```success``` or ```failure```|
 |```message``` | Readable description of the error|
 |```error_code``` | Int value of the error thrown|
-|```commands``` | A string of commands sent to the lock by the [Nokē Mobile library](https://github.com/noke-inc/noke-mobile-library-ios)|
+|```commands``` | A string of commands sent to the lock by the *Nokē Mobile library documentation [Android]((https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android)) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*|
 |```request``` | Name of the request|
 
 
