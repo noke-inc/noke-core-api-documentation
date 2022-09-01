@@ -211,7 +211,7 @@ Used to view information about locks. Supports finding a single lock, multiple l
 <br/>
 
 ---
-### ***POST /unlock/```
+### POST /unlock/
 
 Used to unlock a lock. Requires a session string from the lock (*see Nokē Mobile library documentation [Android]((https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android)) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*), a mac address, and can optionally take a tracking key to associate to lock activity. 
 
@@ -267,16 +267,16 @@ Used to unlock a lock. Requires a session string from the lock (*see Nokē Mobil
 <br/>
 
 ---
-### ```POST /unshackle/```
+### POST /unshackle/
 
-Used to remove the shackle from an HD padlock. Operates identically to the ```/unlock/``` endpoint.  Please see [above](#post-unlock) for more details. 
+Used to remove the shackle from an HD padlock. Operates identically to the ***/unlock/*** endpoint.  Please see [above](#post-unlock) for more details. 
 
 [back to top](#overview)
 <br/>
 <br/>
 
 ---
-### ```POST /engagelock/```
+### POST /engagelock/
 
 Used to explicitly engage a lock. By default locks automatically engage after being unlocked (following a timeout period). HD locks with firmware 4.25 or higher support a setting that turns this off. In this case, the client is responsible for engaging the lock. This endpoint returns the command necessary to instruct the lock to engage. Requires a session string from the lock (*see Nokē Mobile library documentation [Android]((https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android)) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*), a mac address, and can optionally take a tracking key to associate to lock activity. 
 
@@ -332,7 +332,7 @@ Used to explicitly engage a lock. By default locks automatically engage after be
 <br/>
 
 ---
-#### ```POST /lock/settings/```
+#### POST /lock/settings/
 
 Used to set lock settings. Not all locks will support or accept each setting. See below for possible settings.
 
@@ -417,7 +417,7 @@ The response parameters are the same as for [/qc/issue/](#post-qc-issue), but th
 <br/>
 
 ---
-### ```POST /keys/```
+### POST /keys/
 
 Used to request offline keys for a lock or locks, invalidate any existing keys, or view the status of any offline keys.  These offline keys can be used by the mobile libraries to unlock the lock without an active network connection (*see Nokē Mobile library documentation [Android]((https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android)) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*).
 
@@ -724,7 +724,7 @@ Input (revoke all keys for tracking key/keys)
 <br/>
 
 ---
-### ```Quick Clicks```
+### Quick Clicks
 
 Used to issue quick clicks for a lock or locks, revoke existing quick clicks, or view the status of any active quick clicks.  Quick clicks can be used to unlock the lock without additional hardware. 
 
@@ -746,7 +746,7 @@ Quick clicks are created and removed via the API and are synced with a lock when
 * Quick click codes must be between 3 to 24 characters
 * Quick click's can have a limited use count between 1-254 uses OR may be unlimited use represented by a use count of 255
 
-#### ```POST /qc/issue/```
+#### POST /qc/issue/
 
 Used to issue quick clicks for a lock. This can either be to issue a new code or to update the number of times an existing code can be used.
 
@@ -868,7 +868,7 @@ Mixed Success and Failure (version >= 1.0.0)
 <br/>
 
 ---
-#### ```POST /qc/revoke/```
+#### POST /qc/revoke/
 
 Used to revoke quick clicks from a lock. This is request is very similar to an issue request, just the uses field is not required. The response is identical.
 
@@ -893,7 +893,7 @@ Used to revoke quick clicks from a lock. This is request is very similar to an i
 <br/>
 
 ---
-#### ```POST /qc/display/```
+#### POST /qc/display/
 
 Used to view information about the quick clicks for the given locks. If no macs are included in the request ALL quick clicks for ALL locks will be returned.
 
@@ -973,7 +973,7 @@ The response parameters are the same as for [/qc/issue/](#post-qc-issue), but th
 <br/>
 
 ---
-#### ```POST /qc/``` *deprecated*
+#### POST /qc/ *-deprecated*
 
 Used to request all three quick click action types in one call. This request can contain issues and revokes, but will always be treated as a display call. This is because if no macs are included in the request for display, it will default to displaying ALL quick clicks for ALL locks. This has been the case in the past, but may have been a source of confusion. Also as a result of this, it is impossible to return information about successful issues and revokes in this combined call, but error-details will still contain details about failures.
 
@@ -1076,7 +1076,7 @@ Now consider this timeline:
 | /fobs/sync for Bob                                      | access denied                    | access denied          | lock opens           | lock opens
 
 ---
-### ```POST /fobs/issue/```
+### POST /fobs/issue/
 
 Used to set which lock or locks the fob should be able to unlock.
 
@@ -1171,7 +1171,7 @@ Success
 <br/>
 
 
-### ```POST /fobs/revoke/```
+### POST /fobs/revoke/
 
 Used to remove a lock or locks from a fob which it shouldn't be able to unlock.
 
@@ -1258,7 +1258,7 @@ Success
 <br/>
 
 
-### ```POST /fobs/display/```
+### POST /fobs/display/
 
 Used to display fobs and the locks they can open.
 
@@ -1335,7 +1335,7 @@ Success
 <br/>
 
 
-### ```POST /fobs/sync/```
+### POST /fobs/sync/
 
 Used to update a fob. Requires a session string from the lock (*see Nokē Mobile library documentation [Android]((https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android)) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*). In general usage, the user will start the app then squeeze the fob. Once the app recognizes the fob and connects it can call /fobs/sync/ and then send the returned commands to the fob.
 
@@ -1399,7 +1399,7 @@ Success
 ## Activity
 
 ---
-### ```POST /upload/```
+### POST /upload/
 **DON'T CALL THIS ENDPOINT** <br/>
 *The Nokē Mobile library documentation calls this automatically when a response comes back to the app. This description is included for informational purposes.*
 
@@ -1438,7 +1438,7 @@ Used to upload lock activity logs from a phone app using the  *Nokē Mobile libr
 <br/>
 
 ---
-### ```POST /activity/```
+### POST /activity/
 
 Used to view human-readable activity logs. Can find specific activity logs via filters or can be used to find the most recent activity for a company. Use as many or as few filters to narrow down specific activity data.
 
@@ -1522,7 +1522,7 @@ Used to view human-readable activity logs. Can find specific activity logs via f
 
 |Parameter|Description|
 |--|--|
-|***result*** | String value representing the result of the call. Either ```success``` or ```failure```|
+|***result*** | String value representing the result of the call. Either **success** or **failure**|
 |***message*** | Readable description of the error|
 |***error_code*** | Int value of the error thrown|
 |***activity*** | Array of activity logs|
@@ -1625,9 +1625,9 @@ Updating the firmware on a Noke device is a two-step process:
 
 ### Firmware Update Mode
 
-To place a Noke device into firmware update mode, make a request to the ```fwupdate``` endpoint. This endpoint functions similarly to the ```unlock/``` endpoint, but instead of unlocking the lock, returns a command that places the lock into firmware update mode.
+To place a Noke device into firmware update mode, make a request to the **fwupdate** endpoint. This endpoint functions similarly to the **unlock/** endpoint, but instead of unlocking the lock, returns a command that places the lock into firmware update mode.
 
-### ```POST /fwupdate/```
+### POST /fwupdate/
 
 
 Used to place a Noke device into firmware update mode. Requires a session string from the lock (*see Nokē Mobile library documentation [Android]((https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android)) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*), and a mac address
