@@ -191,18 +191,18 @@ Used to view information about locks. Supports finding a single lock, multiple l
 |***message*** | Readable description of the error|
 |***error_code*** | Int value of the error thrown|
 |***locks*** | Array of locks contain information about all the requested locks|
-|***<span style="white-space:pre" >  -   mac</span>*** | Mac address of the lock|
-|***<span style="white-space:pre" >  -   created_by</span>*** | Name of the user who registered the lock to the company|
-|***<span style="white-space:pre" >  -   created_date</span>*** | Date that the lock was registered to the company|
-|***<span style="white-space:pre" >  -   setup_count</span>*** | Number of times the lock has been set up. Used for tracking logs|
-|***<span style="white-space:pre" >  -   hw_version</span>*** | Hardware version of the lock|
-|***<span style="white-space:pre" >  -   fw_version</span>*** | Current firmware version of the lock|
-|***<span style="white-space:pre" >  -   serial</span>*** | Serial number of the lock.  This can also be found laser-etched onto the lock|
+|***<span style="white-space:pre!important" >  -   mac</span>*** | Mac address of the lock|
+|***<span style="white-space:pre!important" >  -   created_by</span>*** | Name of the user who registered the lock to the company|
+|***<span style="white-space:pre!important" >  -   created_date</span>*** | Date that the lock was registered to the company|
+|***<span style="white-space:pre!important" >  -   setup_count</span>*** | Number of times the lock has been set up. Used for tracking logs|
+|***<span style="white-space:pre!important" >  -   hw_version</span>*** | Hardware version of the lock|
+|***<span style="white-space:pre!important" >  -   fw_version</span>*** | Current firmware version of the lock|
+|***<span style="white-space:pre!important" >  -   serial</span>*** | Serial number of the lock.  This can also be found laser-etched onto the lock|
 |***<span style="white-space:pre" >  -   internal_battery</span>*** | Value of the internal battery of the lock in millivolts|
-|***<span style="white-space:pre" >  -   external_battery</span>*** | Value of the external battery of the lock in millivolts|
-|***<span style="white-space:pre" >  -   status</span>*** | Status of the lock. Indicates if the lock is ready to be used or awaiting setup|
-|***<span style="white-space:pre" >  -   flags</span>*** | An array of flags that indicate if any data needs to be synced to the lock (ie: quick-clicks, keys, etc). Syncing is handled automatically on the unlock endpoint|
-|***<span style="white-space:pre" >  -   settings</span>*** | Map of lock settings and their values (JSON) |
+|***<span style="white-space:pre!important" >  -   external_battery</span>*** | Value of the external battery of the lock in millivolts|
+|***<span style="white-space:pre!important" >  -   status</span>*** | Status of the lock. Indicates if the lock is ready to be used or awaiting setup|
+|***<span style="white-space:pre!important" >  -   flags</span>*** | An array of flags that indicate if any data needs to be synced to the lock (ie: quick-clicks, keys, etc). Syncing is handled automatically on the unlock endpoint|
+|***<span style="white-space:pre!important" >  -   settings</span>*** | Map of lock settings and their values (JSON) |
 |***request*** | Name of the request|
 |***api_version*** | Current information about API versions ([see section on API versions](#api-versions))|
 
@@ -348,7 +348,7 @@ Used to set lock settings. Not all locks will support or accept each setting. Se
 |Parameter|Description|Type/Opts| Default
 |--|--|--|--|
 |***settings*** | A map of settings (keyed by setting name; currently only 'explicit-lock')||
-|***<span style="white-space:pre" >  -   explicit-lock</span>*** | If true, lock will stay unlocked until given an 'engage lock' command. Otherwise, lock engages after timeout (this is the default).|true, false|false
+|***<span style="white-space:pre!important" >  -   explicit-lock</span>*** | If true, lock will stay unlocked until given an 'engage lock' command. Otherwise, lock engages after timeout (this is the default).|true, false|false
 |***macs*** | An array of mac addresses from the lock(s) to display|
 
 ```json
@@ -762,8 +762,8 @@ Used to issue quick clicks for a lock. This can either be to issue a new code or
 |--|--|
 |***mac*** | A mac address from a lock|
 |***quick_clicks*** | An array of quick clicks to create or update|
-|***<span style="white-space:pre" >  -   code</span>*** | A series of 1's and 0's representing the quick click code. Must be at least 3 characters long and no more than 24.|
-|***<span style="white-space:pre" >  -   uses</span>*** | The number of times the code can be used. Any number 1-255 where 255 is a special case and represents unlimited uses.|
+|***<span style="white-space:pre!important" >  -   code</span>*** | A series of 1's and 0's representing the quick click code. Must be at least 3 characters long and no more than 24.|
+|***<span style="white-space:pre!important" >  -   uses</span>*** | The number of times the code can be used. Any number 1-255 where 255 is a special case and represents unlimited uses.|
 
 ###### EXAMPLE REQUEST
 
@@ -846,18 +846,18 @@ Mixed Success and Failure (version >= 1.0.0)
 |***message*** | Readable description of the error|
 |***error_code*** | Int value of the error thrown|
 |***error_details*** | A list of errors encountered. This is particularly useful if multiple quick clicks are issued and some fail while others succeed. *Field added in version 0.1.0, but not used till 1.0.0*|
-|***<span style="white-space:pre" >  -   mac</span>***| The mac address of the lock with an error|
-|***<span style="white-space:pre" >  -   code</span>***| The quick click code that failed|
-|***<span style="white-space:pre" >  -   msg</span>***| The failure message|
-|***<span style="white-space:pre" >  -   action</span>***| The attempted action that resulted in the error (issue, revoke, etc)|
+|***<span style="white-space:pre!important">  -   mac</span>***| The mac address of the lock with an error|
+|***<span style="white-space:pre!important">  -   code</span>***| The quick click code that failed|
+|***<span style="white-space:pre!important">  -   msg</span>***| The failure message|
+|***<span style="white-space:pre!important">  -   action</span>***| The attempted action that resulted in the error (issue, revoke, etc)|
 |***data*** | A list of successful quick click creations/updates. *Added in version 0.1.0*|
-|***<span style="white-space:pre" >  -   mac</span>***| The mac address of the lock with a success|
-|***<span style="white-space:pre" >  -   quick_clicks</span>***| A List of successful quick clicks|
-|***<span style="white-space:pre" >  -   -   code</span>***| The quick click code|
-|***<span style="white-space:pre" >  -   -   pending</span>***| The code's pending state (if applicable)|
-|***<span style="white-space:pre" >  -   -   revoked</span>***| The code's revocation state (if applicable)|
-|***<span style="white-space:pre" >  -   -   uses</span>***| Number of times remaining that the code may be used|
-|***<span style="white-space:pre" >  -   -   start_uses</span>***| Total number of times the code was set to be used|
+|***<span style="white-space:pre!important">  -   mac</span>***| The mac address of the lock with a success|
+|***<span style="white-space:pre!important">  -   quick_clicks</span>***| A List of successful quick clicks|
+|***<span style="white-space:pre!important">  -   -   code</span>***| The quick click code|
+|***<span style="white-space:pre!important">  -   -   pending</span>***| The code's pending state (if applicable)|
+|***<span style="white-space:pre!important">  -   -   revoked</span>***| The code's revocation state (if applicable)|
+|***<span style="white-space:pre!important">  -   -   uses</span>***| Number of times remaining that the code may be used|
+|***<span style="white-space:pre!important">  -   -   start_uses</span>***| Total number of times the code was set to be used|
 |***request*** | Name of the request|
 |***api_version*** | Current information about API versions ([see section on API versions](#api-versions))|
 
@@ -883,7 +883,7 @@ Used to revoke quick clicks from a lock. This is request is very similar to an i
 |--|--|
 |***mac*** | A mac address from a lock|
 |***quick_clicks*** | An array of quick clicks to revoke (identified by the code)|
-|***<span style="white-space:pre" >  -   code</span>*** | A series of 1's and 0's representing the quick click code|
+|***<span style="white-space:pre!important">  -   code</span>*** | A series of 1's and 0's representing the quick click code|
 
 [back to top](#overview) / [TOC](#api)
 
@@ -991,15 +991,15 @@ The request parameters are the same as for the requests above except that for is
 |--|--|
 |***issue*** | An array of quick clicks to issue|
 |***mac*** | A mac address from a lock|
-|***<span style="white-space:pre" >  -   quick_clicks</span>*** | An array of quick clicks to create or update|
-|***<span style="white-space:pre" >  -   -   code</span>*** | A series of 1's and 0's representing the quick click code|
-|***<span style="white-space:pre" >  -   -   uses</span>*** | The number of times the code can be used|
+|***<span style="white-space:pre!important">  -   quick_clicks</span>*** | An array of quick clicks to create or update|
+|***<span style="white-space:pre!important">  -   -   code</span>*** | A series of 1's and 0's representing the quick click code|
+|***<span style="white-space:pre!important">  -   -   uses</span>*** | The number of times the code can be used|
 |***revoke*** | An array of quick clicks to revoke|
-|***<span style="white-space:pre" >  -   mac</span>*** | A mac address from a lock|
-|***<span style="white-space:pre" >  -   quick_clicks</span>*** | An array of quick clicks to revoke (identified by the code)|
-|***<span style="white-space:pre" >  -   -   code</span>*** | A series of 1's and 0's representing the quick click code|
+|***<span style="white-space:pre!important">  -   mac</span>*** | A mac address from a lock|
+|***<span style="white-space:pre!important">  -   quick_clicks</span>*** | An array of quick clicks to revoke (identified by the code)|
+|***<span style="white-space:pre!important">  -   -   code</span>*** | A series of 1's and 0's representing the quick click code|
 |***display*** | The locks to display|
-|***<span style="white-space:pre" >  -   macs</span>*** | An array of mac addresses from the lock(s) to display|
+|***<span style="white-space:pre!important">  -   macs</span>*** | An array of mac addresses from the lock(s) to display|
 
 
 ```json
@@ -1091,8 +1091,8 @@ Used to set which lock or locks the fob should be able to unlock.
 |--|--|
 |***fob_mac*** | A mac address for a fob|
 |***locks*** | An array of locks to create or update|
-|***<span style="white-space:pre" >  -   mac</span>*** | A mac address for a lock|
-|***<span style="white-space:pre" >  -   tracking_key</span>*** | Identifying string used to track activity and revoke lock credentials from a fob|
+|***<span style="white-space:pre!important">  -   mac</span>*** | A mac address for a lock|
+|***<span style="white-space:pre!important">  -   tracking_key</span>*** | Identifying string used to track activity and revoke lock credentials from a fob|
 
 ###### EXAMPLE REQUEST
 
@@ -1153,13 +1153,13 @@ Success
 |***error_code*** | Int value of the error thrown|
 |***error_details*** | A list of errors encountered. This is particularly useful if multiple locks are issued and some fail while others succeed. |
 |***data*** | A list of successful quick click creations/updates.|
-|***<span style="white-space:pre" >  -   fob*** | The mac address of the fob with a success|
-|***<span style="white-space:pre" >  -   locks*** | A List of successful locks added|
-|***<span style="white-space:pre" >  -   -   mac*** | The mac address of the lock|
-|***<span style="white-space:pre" >  -   -   tracking_key*** | The tracking_key for the lock/fob pair|
-|***<span style="white-space:pre" >  -   -   offline_key*** | The encrypted key for unlocking the lock|
-|***<span style="white-space:pre" >  -   -   unlock_command*** | The unlock command to send to the lock|
-|***<span style="white-space:pre" >  -   -   status*** | The status of the credentials on the fob|
+|***<span style="white-space:pre!important">  -   fob*** | The mac address of the fob with a success|
+|***<span style="white-space:pre!important">  -   locks*** | A List of successful locks added|
+|***<span style="white-space:pre!important">  -   -   mac*** | The mac address of the lock|
+|***<span style="white-space:pre!important">  -   -   tracking_key*** | The tracking_key for the lock/fob pair|
+|***<span style="white-space:pre!important">  -   -   offline_key*** | The encrypted key for unlocking the lock|
+|***<span style="white-space:pre!important">  -   -   unlock_command*** | The unlock command to send to the lock|
+|***<span style="white-space:pre!important">  -   -   status*** | The status of the credentials on the fob|
 |***request*** | Name of the request|
 |***api_version*** | Current information about API versions ([see section on API versions](#api-versions))|
 
@@ -1240,13 +1240,13 @@ Success
 |***error_code*** | Int value of the error thrown|
 |***error_details*** | A list of errors encountered. This is particularly useful if multiple locks are issued and some fail while others succeed. |
 |***data*** | A list of successful quick click creations/updates.|
-|***<span style="white-space:pre" >  -   fob</span>*** | The mac address of the fob with a success|
-|***<span style="white-space:pre" >  -   locks</span>*** | A List of successful locks added|
-|***<span style="white-space:pre" >  -   -   mac</span>*** | The mac address of the lock|
-|***<span style="white-space:pre" >  -   -   tracking_key</span>*** | The tracking_key for the lock/fob pair|
-|***<span style="white-space:pre" >  -   -   offline_key</span>*** | The encrypted key for unlocking the lock|
-|***<span style="white-space:pre" >  -   -   unlock_command</span>*** | The unlock command to send to the lock|
-|***<span style="white-space:pre" >  -   -   status</span>*** | The status of the credentials on the fob|
+|***<span style="white-space:pre!important">  -   fob</span>*** | The mac address of the fob with a success|
+|***<span style="white-space:pre!important">  -   locks</span>*** | A List of successful locks added|
+|***<span style="white-space:pre!important">  -   -   mac</span>*** | The mac address of the lock|
+|***<span style="white-space:pre!important">  -   -   tracking_key</span>*** | The tracking_key for the lock/fob pair|
+|***<span style="white-space:pre!important">  -   -   offline_key</span>*** | The encrypted key for unlocking the lock|
+|***<span style="white-space:pre!important">  -   -   unlock_command</span>*** | The unlock command to send to the lock|
+|***<span style="white-space:pre!important">  -   -   status</span>*** | The status of the credentials on the fob|
 |***request*** | Name of the request|
 |***api_version*** | Current information about API versions ([see section on API versions](#api-versions))|
 
@@ -1317,13 +1317,13 @@ Success
 |***error_code*** | Int value of the error thrown|
 |***error_details*** | A list of errors encountered. This is particularly useful if multiple locks are issued and some fail while others succeed. |
 |***data*** | A list of successful quick click creations/updates.|
-|***<span style="white-space:pre" >  -   fob</span>*** | The mac address of the fob with a success|
-|***<span style="white-space:pre" >  -   locks</span>*** | A List of successful locks added|
-|***<span style="white-space:pre" >  -   -   mac</span>*** | The mac address of the lock|
-|***<span style="white-space:pre" >  -   -   tracking_key</span>*** | The tracking_key for the lock/fob pair|
-|***<span style="white-space:pre" >  -   -   offline_key</span>*** | The encrypted key for unlocking the lock|
-|***<span style="white-space:pre" >  -   -   unlock_command</span>*** | The unlock command to send to the lock|
-|***<span style="white-space:pre" >  -   -   status</span>*** | The status of the credentials on the fob|
+|***<span style="white-space:pre!important">  -   fob</span>*** | The mac address of the fob with a success|
+|***<span style="white-space:pre!important">  -   locks</span>*** | A List of successful locks added|
+|***<span style="white-space:pre!important">  -   -   mac</span>*** | The mac address of the lock|
+|***<span style="white-space:pre!important">  -   -   tracking_key</span>*** | The tracking_key for the lock/fob pair|
+|***<span style="white-space:pre!important">  -   -   offline_key</span>*** | The encrypted key for unlocking the lock|
+|***<span style="white-space:pre!important">  -   -   unlock_command</span>*** | The unlock command to send to the lock|
+|***<span style="white-space:pre!important">  -   -   status</span>*** | The status of the credentials on the fob|
 |***request*** | Name of the request|
 |***api_version*** | Current information about API versions ([see section on API versions](#api-versions))|
 
@@ -1383,7 +1383,7 @@ Success
 |***error_code*** | Int value of the error thrown|
 |***error_details*** | A list of errors encountered. This is particularly useful if multiple locks are issued and some fail while others succeed. |
 |***data*** | A list of successful quick click creations/updates.|
-|***<span style="white-space:pre" >  -   commands</span>*** | A string of commands sent to the fob via the Nokē Mobile library [Android](https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios).|
+|***<span style="white-space:pre!important">  -   commands</span>*** | A string of commands sent to the fob via the Nokē Mobile library [Android](https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios).|
 |***request*** | Name of the request|
 |***api_version*** | Current information about API versions ([see section on API versions](#api-versions))|
 
@@ -1571,11 +1571,11 @@ This information is returned with all of the responses shown above. It identifie
 |Parameter|Description|
 |--|--|
 |***api_version*** | Current information about API versions|
-|***<span style="white-space:pre" >  -   response</span>*** | The version of this response|
-|***<span style="white-space:pre" >  -   available</span>*** | A list of known API versions keyed by version number (versions are semantic in nature)|
-|***<span style="white-space:pre" >  -   -   changes</span>*** | A summary of changes made in this version|
-|***<span style="white-space:pre" >  -   -   status</span>*** | The current status of this version i.e. deprecated, default, active|
-|***<span style="white-space:pre" >  -   default</span>*** | This is the version returned if a specific API version is not requested|
+|***<span style="white-space:pre!important">  -   response</span>*** | The version of this response|
+|***<span style="white-space:pre!important">  -   available</span>*** | A list of known API versions keyed by version number (versions are semantic in nature)|
+|***<span style="white-space:pre!important">  -   -   changes</span>*** | A summary of changes made in this version|
+|***<span style="white-space:pre!important">  -   -   status</span>*** | The current status of this version i.e. deprecated, default, active|
+|***<span style="white-space:pre!important">  -   default</span>*** | This is the version returned if a specific API version is not requested|
 
 [back to top](#overview)
 <br/>
