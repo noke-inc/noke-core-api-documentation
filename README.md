@@ -4,7 +4,7 @@
 
 The Nokē Core API is a quick and simple way to integrate Nokē products with your existing software systems. This documentation covers the initial closed beta release. 
 
-If you've looked at the Nokē Mobile Library documentation (*[Android]((https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android)) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*) you may recognize the structure of the following diagram, but you'll also see some differences. This diagram represents a client with a server (which is the most common setup). It also includes more detail. 
+If you've looked at the Nokē Mobile Library documentation (*[Android](https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*) you may recognize the structure of the following diagram, but you'll also see some differences. This diagram represents a client with a server (which is the most common setup). It also includes more detail. 
 
 ![Core API Architecture](core_api_diagram.png)
 
