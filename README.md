@@ -111,17 +111,17 @@ Used to view information about locks. Supports finding a single lock, multiple l
 #### HEADERS
 
 
-|Key|Value|
-|--|--|
-|Content-Type | application/json  |
-|Authorization | Bearer *api_key* |
+|Key           |Value              |
+|--            |--                 |
+|Content-Type  | application/json  |
+|Authorization | Bearer *api_key*  |
 
 
 #### BODY
 
-|Parameter|Description|
-|--|--|
-|***macs*** | An array of mac addresses from the lock(s) _optional_|
+|Parameter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description|
+|--            |--|
+|***macs***    | An array of mac addresses from the lock(s) _optional_|
 |***serials*** | An array of serial numbers for the lock(s) _optional_|
 
 
@@ -184,26 +184,26 @@ Used to view information about locks. Supports finding a single lock, multiple l
 }
 ```
 
-|Parameter|Description|
-|--|--|
-|***result*** | String value representing the result of the call. Either **<span style="color:skyblue">success</span>** or **<span style="color:skyblue">failure</span>**|
-|***message*** | Readable description of the error|
-|***error_code*** | Int value of the error thrown|
-|***locks*** | Array of locks contain information about all the requested locks|
-|***<span style="white-space:pre!important" >  -   mac</span>*** | Mac address of the lock|
-|***<span style="white-space:pre!important" >  -   created_by</span>*** | Name of the user who registered the lock to the company|
-|***<span style="white-space:pre!important" >  -   created_date</span>*** | Date that the lock was registered to the company|
-|***<span style="white-space:pre!important" >  -   setup_count</span>*** | Number of times the lock has been set up. Used for tracking logs|
-|***<span style="white-space:pre!important" >  -   hw_version</span>*** | Hardware version of the lock|
-|***<span style="white-space:pre!important" >  -   fw_version</span>*** | Current firmware version of the lock|
-|***<span style="white-space:pre!important" >  -   serial</span>*** | Serial number of the lock.  This can also be found laser-etched onto the lock|
-|***<span style="white-space:pre" >  -   internal_battery</span>*** | Value of the internal battery of the lock in millivolts|
-|***<span style="white-space:pre!important" >  -   external_battery</span>*** | Value of the external battery of the lock in millivolts|
-|***<span style="white-space:pre!important" >  -   status</span>*** | Status of the lock. Indicates if the lock is ready to be used or awaiting setup|
-|***<span style="white-space:pre!important" >  -   flags</span>*** | An array of flags that indicate if any data needs to be synced to the lock (ie: quick-clicks, keys, etc). Syncing is handled automatically on the unlock endpoint|
-|***<span style="white-space:pre!important" >  -   settings</span>*** | Map of lock settings and their values (JSON) |
-|***request*** | Name of the request|
-|***api_version*** | Current information about API versions ([see section on API versions](#api-versions))|
+|Parameter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description|
+|--                       |--|
+|***result***             | String value representing the result of the call. Either **<span style="color:skyblue">success</span>** or **<span style="color:skyblue">failure</span>**|
+|***message***            | Readable description of the error|
+|***error_code***         | Int value of the error thrown|
+|***locks***              | Array of locks contain information about all the requested locks|
+|***- mac***              | Mac address of the lock|
+|***- created_by***       | Name of the user who registered the lock to the company|
+|***- created_date***     | Date that the lock was registered to the company|
+|***- setup_count***      | Number of times the lock has been set up. Used for tracking logs|
+|***- hw_version***       | Hardware version of the lock|
+|***- fw_version***       | Current firmware version of the lock|
+|***- serial***           | Serial number of the lock.  This can also be found laser-etched onto the lock|
+|***- internal_battery*** | Value of the internal battery of the lock in millivolts|
+|***- external_battery*** | Value of the external battery of the lock in millivolts|
+|***- status***           | Status of the lock. Indicates if the lock is ready to be used or awaiting setup|
+|***- flags***            | An array of flags that indicate if any data needs to be synced to the lock (ie: quick-clicks, keys, etc). Syncing is handled automatically on the unlock endpoint|
+|***- settings***         | Map of lock settings and their values (JSON) |
+|***request***            | Name of the request|
+|***api_version***        | Current information about API versions ([see section on API versions](#api-versions))|
 
 [back to top](#overview) / [TOC](#api)
 <br/>
@@ -216,18 +216,18 @@ Used to unlock a lock. Requires a session string from the lock (*see Nokē Mobil
 
 #### HEADERS
 
-|  Key | Value  |
-|--|--|
-|Content-Type | application/json  |
-|Authorization | Bearer *api_key* |
+|  Key         | Value             |
+|--            |--                 |
+|Content-Type  | application/json  |
+|Authorization | Bearer *api_key*  |
 
 #### BODY
 
-|Parameter|Description|
-|--|--|
-|***mac*** | The mac address of the lock|
-|***session***| Unique session generated by the lock and read by the phone when connecting. (*see Nokē Mobile library documentation [Android](https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*)|
-|***tracking_key*** | An optional string used to associate to lock activity|
+|Parameter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description|
+|--                  |--|
+|***mac***           | The mac address of the lock|
+|***session***       | Unique session generated by the lock and read by the phone when connecting. (*see Nokē Mobile library documentation [Android](https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*)|
+|***tracking_key***  | An optional string used to associate to lock activity|
 
 ```json
 {
@@ -252,14 +252,14 @@ Used to unlock a lock. Requires a session string from the lock (*see Nokē Mobil
 }
 ```
 
-|Parameter|Description|
-|--|--|
-|***result*** | String value representing the result of the call. Either ```success``` or ```failure```|
-|***message*** | Readable description of the error|
-|***error_code*** | Int value of the error thrown|
-|***commands*** | A string of commands sent to the lock by the (*Nokē Mobile library documentation [Android](https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*)|
-|***request*** | Name of the request|
-|***api_version*** | Current information about API versions ([see section on API versions](#api-versions))|
+|Parameter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description|
+|--                 |--|
+|***result***       | String value representing the result of the call. Either ```success``` or ```failure```|
+|***message***      | Readable description of the error|
+|***error_code***   | Int value of the error thrown|
+|***commands***     | A string of commands sent to the lock by the (*Nokē Mobile library documentation [Android](https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*)|
+|***request***      | Name of the request|
+|***api_version***  | Current information about API versions ([see section on API versions](#api-versions))|
 
 [back to top](#overview) / [TOC](#api)
 <br/>
@@ -281,17 +281,17 @@ Used to explicitly engage a lock. By default locks automatically engage after be
 
 #### HEADERS
 
-|  Key | Value  |
-|--|--|
-|Content-Type | application/json  |
-|Authorization | Bearer *api_key* |
+|  Key         | Value             |
+|--            |--                 |
+|Content-Type  | application/json  |
+|Authorization | Bearer *api_key*  |
 
 #### BODY
 
-|Parameter|Description|
-|--|--|
-|***mac*** | The mac address of the lock|
-|***session*** | Unique session generated by the lock and read by the phone when connecting. (*see Nokē Mobile library documentation [Android](https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*)|
+|Parameter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description|
+|--                 |--|
+|***mac***          | The mac address of the lock|
+|***session***      | Unique session generated by the lock and read by the phone when connecting. (*see Nokē Mobile library documentation [Android](https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*)|
 |***tracking_key*** | An optional string used to associate to lock activity|
 
 ```json
@@ -317,14 +317,14 @@ Used to explicitly engage a lock. By default locks automatically engage after be
 }
 ```
 
-|Parameter|Description|
-|--|--|
-|***result*** | String value representing the result of the call. Either ```success``` or ```failure```|
-|***message*** | Readable description of the error|
-|***error_code*** | Int value of the error thrown|
-|***commands*** | A string of commands sent to the lock by the (*Nokē Mobile library documentation [Android](https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*)|
-|***request*** | Name of the request|
-|***api_version*** | Current information about API versions ([see section on API versions](#api-versions))|
+|Parameter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description|
+|--                 |--|
+|***result***       | String value representing the result of the call. Either ```success``` or ```failure```|
+|***message***      | Readable description of the error|
+|***error_code***   | Int value of the error thrown|
+|***commands***     | A string of commands sent to the lock by the (*Nokē Mobile library documentation [Android](https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*)|
+|***request***      | Name of the request|
+|***api_version***  | Current information about API versions ([see section on API versions](#api-versions))|
 
 [back to top](#overview) / [TOC](#api)
 <br/>
@@ -344,11 +344,11 @@ Used to set lock settings. Not all locks will support or accept each setting. Se
 
 ##### BODY
 
-|Parameter|Description|Type/Opts| Default
-|--|--|--|--|
-|***settings*** | A map of settings (keyed by setting name; currently only 'explicit-lock')||
-|***<span style="white-space:pre!important" >  -   explicit-lock</span>*** | If true, lock will stay unlocked until given an 'engage lock' command. Otherwise, lock engages after timeout (this is the default).|true, false|false
-|***macs*** | An array of mac addresses from the lock(s) to display|
+|Parameter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description                                                                                                                                                                         |Type/Opts  | Default
+|--                                                 |--                                                                                                                                                                                  |--         |--
+|***settings***                                     | A map of settings (keyed by setting name; currently only 'explicit-lock')                                                                                                          |           |
+|***- explicit-lock***                              | If true, lock will stay unlocked until given an 'engage lock' command. Otherwise, lock engages after timeout (this is the default). *Currently this is the only setting available.*|true, false|false
+|***macs***                                         | An array of mac addresses from the lock(s) to display                                                                                                                              |           |
 
 ```json
 {
@@ -366,49 +366,29 @@ Used to set lock settings. Not all locks will support or accept each setting. Se
 
 ```json
 {
-    "result": "success",
-    "message": "Command successfully completed",
-    "error_code": 0,
-    "error_details": null,
-    "data":  [
-        {
-            "mac": "YY:YY:YY:YY:YY",
-            "quick_clicks": [
-                {
-                    "code": "101",
-                    "pending": true,
-                    "revoked": false,
-                    "uses": 255,
-                    "start_uses": 255
-                },
-                {
-                    "code": "010",
-                    "pending": true,
-                    "revoked": false,
-                    "uses": 10,
-                    "start_uses": 15
-                }
-            ]
-        },
-        {
-            "mac": "XX:XX:XX:XX:XX",
-            "quick_clicks": [
-                {
-                    "code": "101",
-                    "pending": false,
-                    "revoked": true,
-                    "uses": 255,
-                    "start_uses": 255
-                }
-            ]
-        }
-    ],
-    "request": "qc/display",
+	"result": "success",
+	"message": "Command successfully completed",
+	"error_code": 0,
+	"data": {
+		"C6:E1:84:C4:CF:40": [
+			"SUCCESS: assigned setting: explicit-lock",
+			"SUCCESS: saved settings"
+		]
+	},
+	"request": "lock/settings",
     "api_version": { ... }
 }
 ```
 
-The response parameters are the same as for [/qc/issue/](#post-qc-issue), but the error_details field will likely always be null for a display request since it either succeeds or fails all together.
+
+|Parameter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description|
+|--                 |--|
+|***result***       | String value representing the result of the call. Either ```success``` or ```failure```|
+|***message***      | Readable description of the error|
+|***error_code***   | Int value of the error thrown|
+|***data***         | A list of messages (successes and failures) for each lock and the settings set on them.|
+|***request***      | Name of the request|
+|***api_version***  | Current information about API versions ([see section on API versions](#api-versions))|
 
 [back to top](#overview) / [TOC](#api)
 <br/>
@@ -423,16 +403,16 @@ Used to request offline keys for a lock or locks, invalidate any existing keys, 
 
 #### HEADERS
 
-|  Key | Value  |
-|--|--|
-|Content-Type | application/json  |
-|Authorization | Bearer *api_key* |
+|  Key         | Value             |
+|--            |--                 |
+|Content-Type  | application/json  |
+|Authorization | Bearer *api_key*  |
 
 #### BODY
 
-|Parameter|Description|
-|--|--|
-|***macs*** | The mac address(es) of the lock(s)|
+|Parameter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description|
+|--                  |--|
+|***macs***          | The mac address(es) of the lock(s)|
 |***tracking_keys*** | Identifying string used to track activity and revoke keys|
 
 ```json
@@ -502,15 +482,15 @@ Used to request offline keys for a lock or locks, invalidate any existing keys, 
 }
 ```
 
-|Parameter|Description|
-|--|--|
-|***mac*** | Mac address of the lock.|
-|***tracking_key*** | String used to track activity associated with the key|
-|***offline_key*** | Key used by the mobile library to encrypt the unlock command|
-|***unlock_command*** | Command sent by the mobile library to the lock to unlock the lock|
-|***error_code*** | Int value of the error thrown|
-|***request*** | Name of the request|
-|***api_version*** | Current information about API versions ([see section on API versions](#api-versions))|
+|Parameter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description|
+|--                       |--|
+|***mac***                | Mac address of the lock.|
+|***tracking_key***       | String used to track activity associated with the key|
+|***offline_key***        | Key used by the mobile library to encrypt the unlock command|
+|***unlock_command***     | Command sent by the mobile library to the lock to unlock the lock|
+|***error_code***         | Int value of the error thrown|
+|***request***            | Name of the request|
+|***api_version***        | Current information about API versions ([see section on API versions](#api-versions))|
 
 [back to top](#overview) / [TOC](#api)
 <br/>
@@ -520,16 +500,16 @@ Used to request offline keys for a lock or locks, invalidate any existing keys, 
 
 ##### HEADERS
 
-|  Key | Value  |
-|--|--|
-|Content-Type | application/json  |
-|Authorization | Bearer *api_key* |
+|  Key         | Value             |
+|--            |--                 |
+|Content-Type  | application/json  |
+|Authorization | Bearer *api_key*  |
 
 #### BODY
 
-|Parameter|Description|
-|--|--|
-|***macs*** | The mac address(es) of the lock(s)|
+|Parameter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description|
+|--                  |--|
+|***macs***          | The mac address(es) of the lock(s)|
 |***tracking_keys*** | Identifying string used to track activity and revoke keys|
 
 Input (empty)
@@ -616,15 +596,15 @@ Input (limit by tracking key)
 }
 ```
 
-|Parameter|Description|
-|--|--|
-|***mac*** | Mac address of the lock.|
-|***tracking_key*** | String used to track activity associated with the key|
-|***offline_key*** | Key used by the mobile library to encrypt the unlock command|
-|***unlock_command*** | Command sent by the mobile library to the lock to unlock the lock|
-|***error_code*** | Int value of the error thrown|
-|***request*** | Name of the request|
-|***api_version*** | Current information about API versions ([see section on API versions](#api-versions))|
+|Parameter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description|
+|--                    |--|
+|***mac***             | Mac address of the lock.|
+|***tracking_key***    | String used to track activity associated with the key|
+|***offline_key***     | Key used by the mobile library to encrypt the unlock command|
+|***unlock_command***  | Command sent by the mobile library to the lock to unlock the lock|
+|***error_code***      | Int value of the error thrown|
+|***request***         | Name of the request|
+|***api_version***     | Current information about API versions ([see section on API versions](#api-versions))|
 
 [back to top](#overview) / [TOC](#api)
 <br/>
@@ -636,16 +616,16 @@ When revoking keys please be aware that the revoked offline keys will still work
 
 ##### HEADERS
 
-|  Key | Value  |
-|--|--|
-|Content-Type | application/json  |
-|Authorization | Bearer *api_key* |
+|  Key         | Value             |
+|--            |--                 |
+|Content-Type  | application/json  |
+|Authorization | Bearer *api_key*  |
 
 #### BODY
 
-|Parameter|Description|
-|--|--|
-|***macs*** | The mac address(es) of the lock(s)|
+|Parameter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description|
+|--                  |--|
+|***macs***          | The mac address(es) of the lock(s)|
 |***tracking_keys*** | Identifying string used to track activity and revoke keys|
 
 Input (revoke specific)
@@ -682,7 +662,6 @@ Input (revoke all keys for tracking key/keys)
 }
 ```
 
-
 #### EXAMPLE RESPONSE
 
 ```json
@@ -715,15 +694,15 @@ Input (revoke all keys for tracking key/keys)
 }
 ```
 
-|Parameter|Description|
-|--|--|
-|***mac*** | Mac address of the lock.|
-|***tracking_key*** | String used to track activity associated with the key|
-|***offline_key*** | Key used by the mobile library to encrypt the unlock command|
-|***unlock_command*** | Command sent by the mobile library to the lock to unlock the lock|
-|***error_code*** | Int value of the error thrown|
-|***request*** | Name of the request|
-|***api_version*** | Current information about API versions ([see section on API versions](#api-versions))|
+|Parameter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description|
+|--                    |--|
+|***mac***             | Mac address of the lock.|
+|***tracking_key***    | String used to track activity associated with the key|
+|***offline_key***     | Key used by the mobile library to encrypt the unlock command|
+|***unlock_command***  | Command sent by the mobile library to the lock to unlock the lock|
+|***error_code***      | Int value of the error thrown|
+|***request***         | Name of the request|
+|***api_version***     | Current information about API versions ([see section on API versions](#api-versions))|
 
 [back to top](#overview) / [TOC](#api)
 <br/>
@@ -769,12 +748,12 @@ Used to issue quick clicks for a lock. This can either be to issue a new code or
 
 ##### BODY
 
-|Parameter|Description|
-|--|--|
-|***mac*** | A mac address from a lock|
-|***quick_clicks*** | An array of quick clicks to create or update|
-|***<span style="white-space:pre!important" >  -   code</span>*** | A series of 1's and 0's representing the quick click code. Must be at least 3 characters long and no more than 24.|
-|***<span style="white-space:pre!important" >  -   uses</span>*** | The number of times the code can be used. Any number 1-255 where 255 is a special case and represents unlimited uses.|
+|Parameter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description|
+|--                   |--|
+|***mac***            | A mac address from a lock|
+|***quick_clicks***   | An array of quick clicks to create or update|
+|***- code***         | A series of 1's and 0's representing the quick click code. Must be at least 3 characters long and no more than 24.|
+|***- uses***         | The number of times the code can be used. Any number 1-255 where 255 is a special case and represents unlimited uses.|
 
 ###### EXAMPLE REQUEST
 
@@ -851,26 +830,26 @@ Mixed Success and Failure (version >= 1.0.0)
 }
 ```
 
-|Parameter|Description|
-|--|--|
-|***result*** | String value representing the result of the call. Either **success** or **failure**|
-|***message*** | Readable description of the error|
-|***error_code*** | Int value of the error thrown|
-|***error_details*** | A list of errors encountered. This is particularly useful if multiple quick clicks are issued and some fail while others succeed. *Field added in version 0.1.0, but not used till 1.0.0*|
-|***<span style="white-space:pre!important">  -   mac</span>***| The mac address of the lock with an error|
-|***<span style="white-space:pre!important">  -   code</span>***| The quick click code that failed|
-|***<span style="white-space:pre!important">  -   msg</span>***| The failure message|
-|***<span style="white-space:pre!important">  -   action</span>***| The attempted action that resulted in the error (issue, revoke, etc)|
-|***data*** | A list of successful quick click creations/updates. *Added in version 0.1.0*|
-|***<span style="white-space:pre!important">  -   mac</span>***| The mac address of the lock with a success|
-|***<span style="white-space:pre!important">  -   quick_clicks</span>***| A List of successful quick clicks|
-|***<span style="white-space:pre!important">  -   -   code</span>***| The quick click code|
-|***<span style="white-space:pre!important">  -   -   pending</span>***| The code's pending state (if applicable)|
-|***<span style="white-space:pre!important">  -   -   revoked</span>***| The code's revocation state (if applicable)|
-|***<span style="white-space:pre!important">  -   -   uses</span>***| Number of times remaining that the code may be used|
-|***<span style="white-space:pre!important">  -   -   start_uses</span>***| Total number of times the code was set to be used|
-|***request*** | Name of the request|
-|***api_version*** | Current information about API versions ([see section on API versions](#api-versions))|
+|Parameter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description|
+|--                       |--|
+|***result***             | String value representing the result of the call. Either **success** or **failure**|
+|***message***            | Readable description of the error|
+|***error_code***         | Int value of the error thrown|
+|***error_details***      | A list of errors encountered. This is particularly useful if multiple quick clicks are issued and some fail while others succeed. *Field added in version 0.1.0, but not used till 1.0.0*|
+|***- mac***              | The mac address of the lock with an error|
+|***- code***             | The quick click code that failed|
+|***- msg***              | The failure message|
+|***- action***           | The attempted action that resulted in the error (issue, revoke, etc)|
+|***data***               | A list of successful quick click creations/updates. *Added in version 0.1.0*|
+|***- mac***              | The mac address of the lock with a success|
+|***- quick_clicks***     | A List of successful quick clicks|
+|***- - code***           | The quick click code|
+|***- - pending***        | The code's pending state (if applicable)|
+|***- - revoked***        | The code's revocation state (if applicable)|
+|***- - uses***           | Number of times remaining that the code may be used|
+|***- - start_uses***     | Total number of times the code was set to be used|
+|***request***            | Name of the request|
+|***api_version***        | Current information about API versions ([see section on API versions](#api-versions))|
 
 [back to top](#overview) / [TOC](#api)
 <br/>
@@ -890,11 +869,11 @@ Used to revoke quick clicks from a lock. This is request is very similar to an i
 
 ##### BODY
 
-|Parameter|Description|
-|--|--|
-|***mac*** | A mac address from a lock|
-|***quick_clicks*** | An array of quick clicks to revoke (identified by the code)|
-|***<span style="white-space:pre!important">  -   code</span>*** | A series of 1's and 0's representing the quick click code|
+|Parameter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description|
+|--                  |--|
+|***mac***           | A mac address from a lock|
+|***quick_clicks***  | An array of quick clicks to revoke (identified by the code)|
+|***- code***        | A series of 1's and 0's representing the quick click code|
 
 [back to top](#overview) / [TOC](#api)
 <br/>
@@ -914,9 +893,9 @@ Used to view information about the quick clicks for the given locks. If no macs 
 
 ##### BODY
 
-|Parameter|Description|
-|--|--|
-|***macs*** | An array of mac addresses from the lock(s) to display|
+|Parameter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description|
+|--          |--|
+|***macs***  | An array of mac addresses from the lock(s) to display|
 
 ```json
 {
@@ -997,19 +976,19 @@ It is likely that this call will eventually be deprecated and removed at some fu
 
 The request parameters are the same as for the requests above except that for issue and revoke multiple locks can be specified.
 
-|Parameter|Description|
-|--|--|
-|***issue*** | An array of quick clicks to issue|
-|***mac*** | A mac address from a lock|
-|***<span style="white-space:pre!important">  -   quick_clicks</span>*** | An array of quick clicks to create or update|
-|***<span style="white-space:pre!important">  -   -   code</span>*** | A series of 1's and 0's representing the quick click code|
-|***<span style="white-space:pre!important">  -   -   uses</span>*** | The number of times the code can be used|
-|***revoke*** | An array of quick clicks to revoke|
-|***<span style="white-space:pre!important">  -   mac</span>*** | A mac address from a lock|
-|***<span style="white-space:pre!important">  -   quick_clicks</span>*** | An array of quick clicks to revoke (identified by the code)|
-|***<span style="white-space:pre!important">  -   -   code</span>*** | A series of 1's and 0's representing the quick click code|
-|***display*** | The locks to display|
-|***<span style="white-space:pre!important">  -   macs</span>*** | An array of mac addresses from the lock(s) to display|
+|Parameter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description|
+|--                     |--|
+|***issue***            | An array of quick clicks to issue|
+|***mac***              | A mac address from a lock|
+|***- quick_clicks***   | An array of quick clicks to create or update|
+|***- - code***         | A series of 1's and 0's representing the quick click code|
+|***- - uses***         | The number of times the code can be used|
+|***revoke***           | An array of quick clicks to revoke|
+|***- mac***            | A mac address from a lock|
+|***- quick_clicks***   | An array of quick clicks to revoke (identified by the code)|
+|***- - code***         | A series of 1's and 0's representing the quick click code|
+|***display***          | The locks to display|
+|***- macs***           | An array of mac addresses from the lock(s) to display|
 
 
 ```json
@@ -1089,19 +1068,19 @@ Used to set which lock or locks the fob should be able to unlock.
 
 #### HEADERS
 
-|  Key | Value  |
-|--|--|
-|Content-Type | application/json  |
+|  Key         | Value  |
+|--            |--|
+|Content-Type  | application/json  |
 |Authorization | Bearer *api_key* |
 
 ##### BODY
 
-|Parameter|Description|
-|--|--|
-|***fob_mac*** | A mac address for a fob|
-|***locks*** | An array of locks to create or update|
-|***<span style="white-space:pre!important">  -   mac</span>*** | A mac address for a lock|
-|***<span style="white-space:pre!important">  -   tracking_key</span>*** | Identifying string used to track activity and revoke lock credentials from a fob|
+|Parameter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description|
+|--                   |--|
+|***fob_mac***        | A mac address for a fob|
+|***locks***          | An array of locks to create or update|
+|***- mac***          | A mac address for a lock|
+|***- tracking_key*** | Identifying string used to track activity and revoke lock credentials from a fob|
 
 ###### EXAMPLE REQUEST
 
@@ -1155,22 +1134,22 @@ Success
 }
 ```
 
-|Parameter|Description|
-|--|--|
-|***result*** | String value representing the result of the call. Either ```success``` or ```failure```|
-|***message*** | Readable description of the error|
-|***error_code*** | Int value of the error thrown|
-|***error_details*** | A list of errors encountered. This is particularly useful if multiple locks are issued and some fail while others succeed. |
-|***data*** | A list of successful quick click creations/updates.|
-|***<span style="white-space:pre!important">  -   fob*** | The mac address of the fob with a success|
-|***<span style="white-space:pre!important">  -   locks*** | A List of successful locks added|
-|***<span style="white-space:pre!important">  -   -   mac*** | The mac address of the lock|
-|***<span style="white-space:pre!important">  -   -   tracking_key*** | The tracking_key for the lock/fob pair|
-|***<span style="white-space:pre!important">  -   -   offline_key*** | The encrypted key for unlocking the lock|
-|***<span style="white-space:pre!important">  -   -   unlock_command*** | The unlock command to send to the lock|
-|***<span style="white-space:pre!important">  -   -   status*** | The status of the credentials on the fob|
-|***request*** | Name of the request|
-|***api_version*** | Current information about API versions ([see section on API versions](#api-versions))|
+|Parameter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description|
+|--                       |--|
+|***result***             | String value representing the result of the call. Either **success** or **failure**|
+|***message***            | Readable description of the error|
+|***error_code***         | Int value of the error thrown|
+|***error_details***      | A list of errors encountered. This is particularly useful if multiple locks are issued and some fail while others succeed. |
+|***data***               | A list of successful quick click creations/updates.|
+|***- fob***              | The mac address of the fob with a success|
+|***- locks***            | A List of successful locks added|
+|***- - mac***            | The mac address of the lock|
+|***- - tracking_key***   | The tracking_key for the lock/fob pair|
+|***- - offline_key***    | The encrypted key for unlocking the lock|
+|***- - unlock_command*** | The unlock command to send to the lock|
+|***- - status***         | The status of the credentials on the fob|
+|***request***            | Name of the request|
+|***api_version***        | Current information about API versions ([see section on API versions](#api-versions))|
 
 
 [back to top](#overview) / [TOC](#api)
@@ -1191,10 +1170,10 @@ Used to remove a lock or locks from a fob which it shouldn't be able to unlock.
 
 ##### BODY
 
-|Parameter|Description|
-|--|--|
-|***fob_mac*** | A mac address for a fob|
-|***lock_macs*** | (optional) Mac address of a lock to remove from a fob|
+|Parameter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description|
+|--                  |--|
+|***fob_mac***       | A mac address for a fob|
+|***lock_macs***     | (optional) Mac address of a lock to remove from a fob|
 |***tracking_keys*** | (optional) Identifying string used to track activity and revoke lock credentials from a fob|
 
 ###### EXAMPLE REQUEST
@@ -1242,22 +1221,22 @@ Success
 }
 ```
 
-|Parameter|Description|
-|--|--|
-|***result*** | String value representing the result of the call. Either ```success``` or ```failure```|
-|***message*** | Readable description of the error|
-|***error_code*** | Int value of the error thrown|
-|***error_details*** | A list of errors encountered. This is particularly useful if multiple locks are issued and some fail while others succeed. |
-|***data*** | A list of successful quick click creations/updates.|
-|***<span style="white-space:pre!important">  -   fob</span>*** | The mac address of the fob with a success|
-|***<span style="white-space:pre!important">  -   locks</span>*** | A List of successful locks added|
-|***<span style="white-space:pre!important">  -   -   mac</span>*** | The mac address of the lock|
-|***<span style="white-space:pre!important">  -   -   tracking_key</span>*** | The tracking_key for the lock/fob pair|
-|***<span style="white-space:pre!important">  -   -   offline_key</span>*** | The encrypted key for unlocking the lock|
-|***<span style="white-space:pre!important">  -   -   unlock_command</span>*** | The unlock command to send to the lock|
-|***<span style="white-space:pre!important">  -   -   status</span>*** | The status of the credentials on the fob|
-|***request*** | Name of the request|
-|***api_version*** | Current information about API versions ([see section on API versions](#api-versions))|
+|Parameter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description|
+|--                       |--|
+|***result***             | String value representing the result of the call. Either ```success``` or ```failure```|
+|***message***            | Readable description of the error|
+|***error_code***         | Int value of the error thrown|
+|***error_details***      | A list of errors encountered. This is particularly useful if multiple locks are issued and some fail while others succeed. |
+|***data***               | A list of successful quick click creations/updates.|
+|***- fob***              | The mac address of the fob with a success|
+|***- locks***            | A List of successful locks added|
+|***- - mac***            | The mac address of the lock|
+|***- - tracking_key***   | The tracking_key for the lock/fob pair|
+|***- - offline_key***    | The encrypted key for unlocking the lock|
+|***- - unlock_command*** | The unlock command to send to the lock|
+|***- - status***         | The status of the credentials on the fob|
+|***request***            | Name of the request|
+|***api_version***        | Current information about API versions ([see section on API versions](#api-versions))|
 
 
 [back to top](#overview) / [TOC](#api)
@@ -1278,7 +1257,7 @@ Used to display fobs and the locks they can open.
 
 ##### BODY
 
-|Parameter|Description|
+|Parameter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description|
 |--|--|
 |***fob_macs*** | An array mac addresses for fobs to be displayed|
 
@@ -1319,20 +1298,20 @@ Success
 }
 ```
 
-|Parameter|Description|
+|Parameter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description|
 |--|--|
 |***result*** | String value representing the result of the call. Either ```success``` or ```failure```|
 |***message*** | Readable description of the error|
 |***error_code*** | Int value of the error thrown|
 |***error_details*** | A list of errors encountered. This is particularly useful if multiple locks are issued and some fail while others succeed. |
 |***data*** | A list of successful quick click creations/updates.|
-|***<span style="white-space:pre!important">  -   fob</span>*** | The mac address of the fob with a success|
-|***<span style="white-space:pre!important">  -   locks</span>*** | A List of successful locks added|
-|***<span style="white-space:pre!important">  -   -   mac</span>*** | The mac address of the lock|
-|***<span style="white-space:pre!important">  -   -   tracking_key</span>*** | The tracking_key for the lock/fob pair|
-|***<span style="white-space:pre!important">  -   -   offline_key</span>*** | The encrypted key for unlocking the lock|
-|***<span style="white-space:pre!important">  -   -   unlock_command</span>*** | The unlock command to send to the lock|
-|***<span style="white-space:pre!important">  -   -   status</span>*** | The status of the credentials on the fob|
+|***- fob*** | The mac address of the fob with a success|
+|***- locks*** | A List of successful locks added|
+|***- - mac*** | The mac address of the lock|
+|***- - tracking_key*** | The tracking_key for the lock/fob pair|
+|***- - offline_key*** | The encrypted key for unlocking the lock|
+|***- - unlock_command*** | The unlock command to send to the lock|
+|***- - status*** | The status of the credentials on the fob|
 |***request*** | Name of the request|
 |***api_version*** | Current information about API versions ([see section on API versions](#api-versions))|
 
@@ -1355,7 +1334,7 @@ Used to update a fob. Requires a session string from the lock (*see Nokē Mobile
 
 ##### BODY
 
-|Parameter|Description|
+|Parameter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description|
 |--|--|
 |***mac*** | A mac address for a fob|
 |***session*** | Unique session generated by the fob and read by the phone when connecting. (see Nokē Mobile library documentation)|
@@ -1385,14 +1364,14 @@ Success
 }
 ```
 
-|Parameter|Description|
+|Parameter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description|
 |--|--|
 |***result*** | String value representing the result of the call. Either ```success``` or ```failure```|
 |***message*** | Readable description of the error|
 |***error_code*** | Int value of the error thrown|
 |***error_details*** | A list of errors encountered. This is particularly useful if multiple locks are issued and some fail while others succeed. |
 |***data*** | A list of successful quick click creations/updates.|
-|***<span style="white-space:pre!important">  -   commands</span>*** | A string of commands sent to the fob via the Nokē Mobile library [Android](https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios).|
+|***- commands*** | A string of commands sent to the fob via the Nokē Mobile library [Android](https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios).|
 |***request*** | Name of the request|
 |***api_version*** | Current information about API versions ([see section on API versions](#api-versions))|
 
@@ -1457,7 +1436,7 @@ Used to view human-readable activity logs. Can find specific activity logs via f
 
 #### BODY
 
-|Filter Parameter|Description|
+|Filter&nbsp;Parameter|Description|
 |--|--|
 |***lock_macs*** | An array of MAC addresses for locks to return activity for|
 |***actions*** | An array of activity actions to return: **alarm_triggered**, **button_touched**, **failed_unlock**, **locked**, **proximity_stats**, **setup_unlocked**, **start_up**, **unknown**, **unlock_via_access_code**, **unlocked**, **unlocked_via_quick_click**, **wake_stats**. By default button_touched, proximity_stats, and wake_stats activity is excluded.|
@@ -1526,7 +1505,7 @@ Used to view human-readable activity logs. Can find specific activity logs via f
 }
 ```
 
-|Parameter|Description|
+|Parameter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description|
 |--|--|
 |***result*** | String value representing the result of the call. Either **success** or **failure**|
 |***message*** | Readable description of the error|
@@ -1576,14 +1555,14 @@ This information is returned with all of the responses shown above. It identifie
         "default": "0.1.0"
    }
 ```
-|Parameter|Description|
+|Parameter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description|
 |--|--|
 |***api_version*** | Current information about API versions|
-|***<span style="white-space:pre!important">  -   response</span>*** | The version of this response|
-|***<span style="white-space:pre!important">  -   available</span>*** | A list of known API versions keyed by version number (versions are semantic in nature)|
-|***<span style="white-space:pre!important">  -   -   changes</span>*** | A summary of changes made in this version|
-|***<span style="white-space:pre!important">  -   -   status</span>*** | The current status of this version i.e. deprecated, default, active|
-|***<span style="white-space:pre!important">  -   default</span>*** | This is the version returned if a specific API version is not requested|
+|***- response*** | The version of this response|
+|***- available*** | A list of known API versions keyed by version number (versions are semantic in nature)|
+|***- - changes*** | A summary of changes made in this version|
+|***- - status*** | The current status of this version i.e. deprecated, default, active|
+|***- default*** | This is the version returned if a specific API version is not requested|
 
 [back to top](#overview) / [TOC](#api)
 <br/>
@@ -1609,7 +1588,7 @@ Major changes are those that remove a feature or change it in such a way that it
 
 #### BODY
 
-|Parameter|Description|
+|Parameter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description|
 |--|--|
 |***api_version*** | The API version to execute for this request|
 
@@ -1652,7 +1631,7 @@ Used to place a Noke device into firmware update mode. Requires a session string
 
 #### BODY
 
-|Parameter|Description|
+|Parameter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description|
 |--|--|
 |***mac*** | The mac address of the lock|
 |***session*** | Unique session generated by the lock and read by the phone when connecting. (*see Nokē Mobile library documentation [Android](https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*)|
@@ -1679,7 +1658,7 @@ Used to place a Noke device into firmware update mode. Requires a session string
 }
 ```
 
-|Parameter|Description|
+|Parameter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description|
 |--|--|
 |***result*** | String value representing the result of the call. Either **success** or **failure**|
 |***message*** | Readable description of the error|
