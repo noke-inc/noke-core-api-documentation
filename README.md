@@ -58,15 +58,28 @@ It is **important** to know that these two servers DO NOT run against isolated d
 
 Also be aware that the pre-release servers may be updated at any time. Most of the time they will have the same code as the main servers, but DO NOT depend on this. 
 
-Finally, while the Nokē Mobile Library has the sandbox and production URLs built in (selected via Mode), it does not have the pre-release URLs built in. It is, therefore, necessary to set the URL specifically when using pre-release servers. *(As of 2022-08-22 the mobile libraries don't support this, but should soon)*.
+Finally, while the Nokē Mobile Library has the sandbox and production URLs built in (selected via Mode), it does not have the pre-release URLs built in. It is, therefore, necessary to set the URL specifically when using pre-release servers. 
+
+#### Android Nokē Mobile Library 
+Supports this as of version 0.10.1. To set the pre-release URL, set the MODE to NOKE_LIBRARY_CUSTOM and set the URL using setCustomUploadUrl(String uploadUrl) For example 
+```
+mNokeService = ((NokeDeviceManagerService.LocalBinder) rawBinder).getService(NokeDefines.NOKE_LIBRARY_CUSTOM);
+mNokeService.setCustomUploadUrl("https://pre-release-dot-coreapi-sandbox.appspot.com/")
+```
+
+#### iOS Nokē Mobile Library
+Supports this as of version 0.9.2. To set the pre-release URL the setLibraryMode() now accepts an optional second parameter and a new mode. For example: 
+```
+NokeDeviceManager.shared().setLibraryMode(NokeLibraryMode.CUSTOM, "https://pre-release-dot-coreapi-sandbox.appspot.com/")
+```
 
 ### Server Values 
-| Use | Server | URL (client set) | Mode (client set) | Keys (client set) | Database |
+| Use | Server | URL *{client set}* | Mode (Android/iOS) *{client set}* | Keys&nbsp;*{client&nbsp;set}* | Database |
 | --- | -------| --- | ---- | ---- | -------- |
-| client development | sandbox | https://coreapi-sandbox.appspot.com/ | SANDBOX | sandbox keys | core-api-sandbox |
-| live use | production | https://coreapi-beta.appspot.com/ | PRODUCTION | production keys | core-api |
-| beta testing w/client development | sandbox pre-release | https://pre-release-dot-coreapi-sandbox.appspot.com/ | SANDBOX | sandbox keys | core-api-sandbox |
-| beta testing w/production | production pre-release | https://pre-release-dot-coreapi-beta.appspot.com/ | PRODUCTION | production keys | core-api |
+| client development | sandbox | https://coreapi-sandbox.appspot.com/ | NOKE_LIBRARY_SANDBOX/SANDBOX | sandbox keys | core-api-sandbox |
+| live use | production | https://coreapi-beta.appspot.com/ | NOKE_LIBRARY_PRODUCTION/PRODUCTION | production keys | core-api |
+| beta testing w/client development | sandbox pre-release | https://pre-release-dot-coreapi-sandbox.appspot.com/ | NOKE_LIBRARY_CUSTOM/CUSTOM | sandbox keys | core-api-sandbox |
+| beta testing w/production | production pre-release | https://pre-release-dot-coreapi-beta.appspot.com/ | NOKE_LIBRARY_CUSTOM/CUSTOM | production keys | core-api |
 
 
 [back to top](#overview)
