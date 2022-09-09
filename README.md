@@ -976,7 +976,9 @@ The response parameters are the same as for [/qc/issue/](#post-qc-issue), but th
 <br/>
 
 ---
-#### <span style="text-decoration:underline">POST /qc/</span> *-deprecated*
+#### <span style="text-decoration:underline">POST /qc/</span> 
+> __Warning__
+> *-deprecated*
 
 Used to request all three quick click action types in one call. This request can contain issues and revokes, but will always be treated as a display call. This is because if no macs are included in the request for display, it will default to displaying ALL quick clicks for ALL locks. This has been the case in the past, but may have been a source of confusion. Also as a result of this, it is impossible to return information about successful issues and revokes in this combined call, but error-details will still contain details about failures.
 
