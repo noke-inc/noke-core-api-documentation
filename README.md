@@ -1404,8 +1404,9 @@ Success
 ## Activity
 
 ### POST /upload/
-**DON'T CALL THIS ENDPOINT** <br/>
-*The Nokē Mobile library documentation calls this automatically when a response comes back to the app. This description is included for informational purposes.*
+> __Warning__
+> **DON'T CALL THIS ENDPOINT** <br/>
+> *The Nokē Mobile library documentation calls this automatically when a response comes back to the app. This description is included for informational purposes.*
 
 Used to upload lock activity logs from a phone app using the  *Nokē Mobile library*. Requires a session string from the lock (*see Nokē Mobile library documentation [Android](https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*), a mac address, and can optionally take a tracking key to associate to lock activity. 
 
