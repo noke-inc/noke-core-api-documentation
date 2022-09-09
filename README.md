@@ -92,8 +92,8 @@ NokeDeviceManager.shared().setLibraryMode(NokeLibraryMode.CUSTOM, "https://pre-r
   * [POST /lock/](#post-lock)
   * [POST /unlock/](#post-unlock)*
   * [POST /unshackle/](#post-unshackle)
-  * [POST /engagelock/](#post-engagelock)
-  * [POST /lock/settings/](#post-locksettings)
+  * [POST /engagelock/](#post-engagelock) <span style="color:red">***not yet live***</span>
+  * [POST /lock/settings/](#post-locksettings) <span style="color:red">***not yet live***</span>
   * [POST /keys/](#post-keys)
   * [Quick Clicks](#quick-clicks)
     * [POST /qc/issue/](#post-qcissue)
@@ -288,7 +288,7 @@ Used to remove the shackle from an HD padlock. Operates identically to the ***/u
 <br/>
 
 ---
-### POST /engagelock/
+### POST /engagelock/ <span style="color:red">***not yet live***</span>
 
 Used to explicitly engage a lock. By default locks automatically engage after being unlocked (following a timeout period). HD locks with firmware 4.25 or higher support a setting that turns this off. In this case, the client is responsible for engaging the lock. This endpoint returns the command necessary to instruct the lock to engage. Requires a session string from the lock (*see Nokē Mobile library documentation [Android](https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*), a mac address, and can optionally take a tracking key to associate to lock activity. 
 
@@ -344,7 +344,7 @@ Used to explicitly engage a lock. By default locks automatically engage after be
 <br/>
 
 ---
-### POST /lock/settings/
+### POST /lock/settings/ <span style="color:red">***not yet live***</span>
 
 Used to set lock settings. Not all locks will support or accept each setting. See below for possible settings.
 
