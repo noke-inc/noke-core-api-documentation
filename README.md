@@ -163,6 +163,8 @@ Failing to wait on setup can cause the lock to enter a state where it can't be s
 
  \* Before testing any code against actual locks, make sure that your mobile api key is set in the Nokē Mobile library. Also, make sure to implement the unlock call first as it also handles lock setup. If these two steps aren't done in the order specified there is the potential for losing lock keys which can result in bricked locks.
 
+[back to top](#overview)
+<br/>
 <br/>
 
 ## Locks
