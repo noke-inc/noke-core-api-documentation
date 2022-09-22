@@ -4,6 +4,17 @@
 
 The Nokē Core API is a quick and simple way to integrate Nokē products with your existing software systems. This documentation covers the initial closed beta release. 
 
+* [Overview](#overview)
+* [Integration](#integration)
+  * [Pre-Release Servers](#pre-release-servers)
+    * [With Android](#android-nokē-mobile-library)
+    * [With iOS](#ios-nokē-mobile-library)
+  * [Server Values](#server-values)
+* [Hardware Interactions](#hardware-interactions)
+  * [Battery Levels](#battery-levels)
+  * [Lock Setup/Sync](#lock-setup-sync)
+* [API Table of Contents (TOC)](#api)
+
 If you've looked at the Nokē Mobile Library documentation (*[Android](https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*) you may recognize the structure of the following diagram, but you'll also see some differences. This diagram represents a client with a server (which is the most common setup). It also includes more detail. 
 
 ![Core API Architecture](core_api_diagram.png)
@@ -26,7 +37,7 @@ Please note that there are multiple Core API servers. Each one has a unique URL 
 
 The private API key and corresponding Core API URL should be used for all API requests made directly by the client.
 
-[back to top](#overview) / [TOC](#api)
+[back to top](#overview) / [API TOC](#api)
 <br/>
 <br/>
 
@@ -81,8 +92,46 @@ NokeDeviceManager.shared().setLibraryMode(NokeLibraryMode.CUSTOM, "https://pre-r
 | beta testing w/client development | sandbox pre-release | https://pre-release-dot-coreapi-sandbox.appspot.com/ | NOKE_LIBRARY_CUSTOM/CUSTOM | sandbox keys | core-api-sandbox |
 | beta testing w/production | production pre-release | https://pre-release-dot-coreapi-beta.appspot.com/ | NOKE_LIBRARY_CUSTOM/CUSTOM | production keys | core-api |
 
+[back to top](#overview) / [API TOC](#api)
+<br/>
+<br/>
 
-[back to top](#overview)
+## Hardware Interactions
+This section includes reminder and general tips on how the API and Noke Mobile Libraries interact with the lock hardware. This is not specific to any particular hardware which is documented elsewhere.
+
+### Battery Levels
+Battery levels depend greatly on chemistry type, hardware using the battery, ambient and internal temperatures, and battery load. This makes it difficult to say exactly when a battery is too low to function. However, here is a scale we use as an estimation guide. Note that in CoreAPI battery voltage is represented in millivolts - that is 3000 means 3.000 volts.
+
+7 - 3.0V; Full<br />
+6 - 2.975V<br />
+5 - 2.95V<br />
+4 - 2.925V<br />
+3 - 2.9V<br />
+2 - 2.875V<br />
+1 - 2.85V; Danger, lowest level
+
+If you prefer a percentage of full power scale you can use a formula like this:
+
+``` 
+if millivolts >= 3000 {
+    percentage = 100
+} else {
+    percentage = ((millivolts - 2800) / 200) * 100
+}
+```
+
+### Lock Setup/Sync
+Various pieces of data must be synchronized between locks and the server. This includes, among other things, keys, quick click codes, and settings. This synchronization takes place as part of the /unlock/ process. That is, if you issue a quick click code through the API, that code will not work on the lock until after the next online unlock of that lock. 
+
+Of particular importance is the first online unlock where the lock is setup up. This is when base, master, and limited keys are sent to the lock. For the server and the lock to communicate they must both have the same set of keys. This means that not only does the server need to tell the lock what its keys are, but the lock needs to tell the server that it successfully stored those keys.
+
+Sometimes this second piece of the synchronization can fail for various unpredictable reasons, such network instability. We have found that one thing that can cause a failure of this acknowledgement of new keys is trying to unlock the lock before that acknowledgement is sent to the server. That is, sending two unlock commands to the lock in rapid succession. 
+
+In general, you can send unlock commands as often and as quickly as you wish, because most of the time no synchronization is needed. During setup, however, it best to only send the unlock commands once and then wait for the lock to go to sleep before trying to unlock it again. This is usually less than 60 seconds after the unlock command was sent.
+
+Failing to wait on setup can cause the lock to enter a state where it can't be setup until we reset it on the server. We have tried a number of different strategies to ease or prevent this issue, but as yet have not been 100% successful in all cases. Thus, it is in your best interest to specifically wait 60 seconds after the first unlock attempt of a new lock before trying again. This is also true after an old lock is reset (limited keys cleared from the database).
+
+[back to top](#overview) / [API TOC](#api)
 <br/>
 <br/>
 
@@ -218,7 +267,7 @@ Used to view information about locks. Supports finding a single lock, multiple l
 |***request***            | Name of the request|
 |***api_version***        | Current information about API versions ([see section on API versions](#api-versions))|
 
-[back to top](#overview) / [TOC](#api)
+[back to top](#overview) / [API TOC](#api)
 <br/>
 <br/>
 
@@ -274,7 +323,7 @@ Used to unlock a lock. Requires a session string from the lock (*see Nokē Mobil
 |***request***      | Name of the request|
 |***api_version***  | Current information about API versions ([see section on API versions](#api-versions))|
 
-[back to top](#overview) / [TOC](#api)
+[back to top](#overview) / [API TOC](#api)
 <br/>
 <br/>
 
@@ -283,7 +332,7 @@ Used to unlock a lock. Requires a session string from the lock (*see Nokē Mobil
 
 Used to remove the shackle from an HD padlock. Operates identically to the ***/unlock/*** endpoint.  Please see [above](#post-unlock) for more details. 
 
-[back to top](#overview) / [TOC](#api)
+[back to top](#overview) / [API TOC](#api)
 <br/>
 <br/>
 
@@ -341,7 +390,7 @@ Used to explicitly engage a lock. By default locks automatically engage after be
 |***request***      | Name of the request|
 |***api_version***  | Current information about API versions ([see section on API versions](#api-versions))|
 
-[back to top](#overview) / [TOC](#api)
+[back to top](#overview) / [API TOC](#api)
 <br/>
 <br/>
 
@@ -407,7 +456,7 @@ Used to set lock settings. Not all locks will support or accept each setting. Se
 |***request***      | Name of the request|
 |***api_version***  | Current information about API versions ([see section on API versions](#api-versions))|
 
-[back to top](#overview) / [TOC](#api)
+[back to top](#overview) / [API TOC](#api)
 <br/>
 <br/>
 
@@ -509,7 +558,7 @@ Used to request offline keys for a lock or locks, invalidate any existing keys, 
 |***request***            | Name of the request|
 |***api_version***        | Current information about API versions ([see section on API versions](#api-versions))|
 
-[back to top](#overview) / [TOC](#api)
+[back to top](#overview) / [API TOC](#api)
 <br/>
 <br/>
 
@@ -623,7 +672,7 @@ Input (limit by tracking key)
 |***request***         | Name of the request|
 |***api_version***     | Current information about API versions ([see section on API versions](#api-versions))|
 
-[back to top](#overview) / [TOC](#api)
+[back to top](#overview) / [API TOC](#api)
 <br/>
 <br/>
 
@@ -721,7 +770,7 @@ Input (revoke all keys for tracking key/keys)
 |***request***         | Name of the request|
 |***api_version***     | Current information about API versions ([see section on API versions](#api-versions))|
 
-[back to top](#overview) / [TOC](#api)
+[back to top](#overview) / [API TOC](#api)
 <br/>
 <br/>
 
@@ -748,7 +797,7 @@ Quick clicks are created and removed via the API and are synced with a lock when
 * Quick click codes must be between 3 to 24 characters
 * Quick click's can have a limited use count between 1-254 uses OR may be unlimited use represented by a use count of 255
 
-[back to top](#overview) / [TOC](#api)
+[back to top](#overview) / [API TOC](#api)
 <br/>
 <br/>
 
@@ -868,7 +917,7 @@ Mixed Success and Failure (version >= 1.0.0)
 |***request***            | Name of the request|
 |***api_version***        | Current information about API versions ([see section on API versions](#api-versions))|
 
-[back to top](#overview) / [TOC](#api)
+[back to top](#overview) / [API TOC](#api)
 <br/>
 <br/>
 
@@ -892,7 +941,7 @@ Used to revoke quick clicks from a lock. This is request is very similar to an i
 |***quick_clicks***  | An array of quick clicks to revoke (identified by the code)|
 |***- code***        | A series of 1's and 0's representing the quick click code|
 
-[back to top](#overview) / [TOC](#api)
+[back to top](#overview) / [API TOC](#api)
 <br/>
 <br/>
 
@@ -971,7 +1020,7 @@ Used to view information about the quick clicks for the given locks. If no macs 
 
 The response parameters are the same as for [/qc/issue/](#post-qc-issue), but the error_details field will likely always be null for a display request since it either succeeds or fails all together.
 
-[back to top](#overview) / [TOC](#api)
+[back to top](#overview) / [API TOC](#api)
 <br/>
 <br/>
 
@@ -1050,7 +1099,7 @@ The request parameters are the same as for the requests above except that for is
     }
 }
 ```
-[back to top](#overview) / [TOC](#api)
+[back to top](#overview) / [API TOC](#api)
 <br/>
 <br/>
 
@@ -1171,7 +1220,7 @@ Success
 |***api_version***        | Current information about API versions ([see section on API versions](#api-versions))|
 
 
-[back to top](#overview) / [TOC](#api)
+[back to top](#overview) / [API TOC](#api)
 <br/>
 <br/>
 
@@ -1258,7 +1307,7 @@ Success
 |***api_version***        | Current information about API versions ([see section on API versions](#api-versions))|
 
 
-[back to top](#overview) / [TOC](#api)
+[back to top](#overview) / [API TOC](#api)
 <br/>
 <br/>
 
@@ -1335,7 +1384,7 @@ Success
 |***api_version*** | Current information about API versions ([see section on API versions](#api-versions))|
 
 
-[back to top](#overview) / [TOC](#api)
+[back to top](#overview) / [API TOC](#api)
 <br/>
 <br/>
 
@@ -1395,7 +1444,7 @@ Success
 |***api_version*** | Current information about API versions ([see section on API versions](#api-versions))|
 
 
-[back to top](#overview) / [TOC](#api)
+[back to top](#overview) / [API TOC](#api)
 <br/>
 <br/>
 
@@ -1438,7 +1487,7 @@ Used to upload lock activity logs from a phone app using the  *Nokē Mobile libr
 }
 ```
 
-[back to top](#overview) / [TOC](#api)
+[back to top](#overview) / [API TOC](#api)
 <br/>
 <br/>
 
@@ -1540,7 +1589,7 @@ Used to view human-readable activity logs. Can find specific activity logs via f
 |***request*** | Name of the request|
 |***api_version*** | Current information about API versions ([see section on API versions](#api-versions))|
 
-[back to top](#overview) / [TOC](#api)
+[back to top](#overview) / [API TOC](#api)
 <br/>
 <br/>
 
@@ -1584,7 +1633,7 @@ This information is returned with all of the responses shown above. It identifie
 |***- - status*** | The current status of this version i.e. deprecated, default, active|
 |***- default*** | This is the version returned if a specific API version is not requested|
 
-[back to top](#overview) / [TOC](#api)
+[back to top](#overview) / [API TOC](#api)
 <br/>
 <br/>
 
@@ -1618,7 +1667,7 @@ Input
     "api_version": "1.0.0"
 ```
 
-[back to top](#overview) / [TOC](#api)
+[back to top](#overview) / [API TOC](#api)
 <br/>
 <br/>
 
@@ -1633,7 +1682,7 @@ Updating the firmware on a Noke device is a two-step process:
 
 To place a Noke device into firmware update mode, make a request to the **fwupdate** endpoint. This endpoint functions similarly to the **unlock/** endpoint, but instead of unlocking the lock, returns a command that places the lock into firmware update mode.
 
-[back to top](#overview) / [TOC](#api)
+[back to top](#overview) / [API TOC](#api)
 <br/>
 <br/>
 
@@ -1686,7 +1735,7 @@ Used to place a Noke device into firmware update mode. Requires a session string
 |***commands*** | A string of commands sent to the lock by the *Nokē Mobile library documentation [Android](https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*|
 |***request*** | Name of the request|
 
-[back to top](#overview) / [TOC](#api)
+[back to top](#overview) / [API TOC](#api)
 <br/>
 <br/>
 
@@ -1699,4 +1748,4 @@ Please follow the instructions provided by Nordic to implement their library int
 
 **Note**: The firmware files needed are currently not available to the public. To get the firmware file needed to update a Noke device, please contact a member of the Noke development team.
 
-[back to top](#overview) / [TOC](#api)
+[back to top](#overview) / [API TOC](#api)
