@@ -97,7 +97,7 @@ NokeDeviceManager.shared().setLibraryMode(NokeLibraryMode.CUSTOM, "https://pre-r
 <br/>
 
 ## Hardware Interactions
-This section includes reminder and general tips on how the API and Noke Mobile Libraries interact with the lock hardware. This is not specific to any particular hardware which is documented elsewhere.
+This section includes reminder and general tips on how the API and Nokē Mobile Libraries interact with the lock hardware. This is not specific to any particular hardware which is documented elsewhere.
 
 ### Battery Levels
 Battery levels depend greatly on chemistry type, hardware using the battery, ambient and internal temperatures, and battery load. This makes it difficult to say exactly when a battery is too low to function. However, here is a scale we use as an estimation guide. Note that in CoreAPI battery voltage is represented in millivolts - that is 3000 means 3.000 volts.
@@ -130,6 +130,48 @@ Sometimes this second piece of the synchronization can fail for various unpredic
 In general, you can send unlock commands as often and as quickly as you wish, because most of the time no synchronization is needed. During setup, however, it best to only send the unlock commands once and then wait for the lock to go to sleep before trying to unlock it again. This is usually less than 60 seconds after the unlock command was sent.
 
 Failing to wait on setup can cause the lock to enter a state where it can't be setup until we reset it on the server. We have tried a number of different strategies to ease or prevent this issue, but as yet have not been 100% successful in all cases. Thus, it is in your best interest to specifically wait 60 seconds after the first unlock attempt of a new lock before trying again. This is also true after an old lock is reset (limited keys cleared from the database).
+
+### Updating Lock Firmware
+As with any other software the lock firmware needs updating from time to time. This can include for fixing bugs on the locks itself or for adding new functionality. Unfortunately, updating the lock firmware must be done one-by-one with each lock in-hand. There a number of reasons for this. The major reason is that there needs to be a stable Internet connection for downloading the new firmware directly to the lock.
+
+#### Steps for updating firmware using the *Nokē Updater* app
+1. Install the *Nokē Updater*
+    * iOS
+        * Download *Nokē Updater* app from the Apple AppStore
+        * https://apps.apple.com/us/app/Nokē-update/id1270460855
+    * Android
+        * Download *Nokē Updater* app as an .apk found at the following link
+        * https://drive.google.com/file/d/13LP5YBkSRrZ0nXo07c_vOWzBXd5XCH3e/view?usp=sharing
+        * After downloading the .apk to an Android device, open the .apk to install the updater app
+1. Wake the lock and connect with your client app.
+    * This assumes that you have implemented the [fwupdate/](#post-fwupdate) API call.
+1. From the app use the **fwupdate/** call to set the lock to Firmware Update Mode.
+    * The lock LED will show blue while the lock in in Firmware Update Mode.
+    * The lock will remain in this mode for 60 seconds or until the firmware is updated, whichever happens first.
+1. With the lock in Firmware Update Mode, open the Nokē Updater app.
+1. Connect to the lock and choose a firmware (if given a choice)
+    * If there is only one firmware compatible with the lock it may not let you choose a firmware version.
+1. The firmware will be loaded on to the lock.
+
+#### Adding firmware update capability to your app
+If you wish to add firmware updating to your app or create your own firmware updater app you will need three things.
+
+* Code to call **fwupdate/** from CoreAPI
+* Code to connect and upload firmware to the lock
+* The firmware file to upload
+
+The steps are the same as above except you will be uploading the firmware file with a code library instead of the *Nokē Updater* app.
+
+##### Uploading firmware 
+To connect to the device and upload the firmware you will need to use the DFU libraries provided by *Nordic Semiconductor*. *Nordic* is the company that provides the chips Nokē locks use, hence the need to use their libraries. Please refer to the documentation included with their libraries for details on using these libraries. You can find the documentation and libraries at the following links.
+
+* iOS
+    * https://github.com/NordicSemiconductor/IOS-Pods-DFU-Library
+* Android
+    * https://github.com/NordicSemiconductor/Android-DFU-Library
+
+##### Firmware files
+Currently, the firmware files aren't publicly available. If you need an updated firmware please contact your Nokē support contact, account rep, or a member of the Nokē development team.
 
 [back to top](#overview) / [API TOC](#api)
 <br/>
@@ -1687,14 +1729,16 @@ Input
 
 ## Firmware Update
 
-Updating the firmware on a Noke device is a two-step process:
+Updating the firmware on a Nokē device is a two-step process:
 
 1. Put the device into firmware update mode
 2. Send the firmware file to the device
 
+See [above](#updating-lock-firmware) for more detail on the process
+
 ### Firmware Update Mode
 
-To place a Noke device into firmware update mode, make a request to the **fwupdate** endpoint. This endpoint functions similarly to the **unlock/** endpoint, but instead of unlocking the lock, returns a command that places the lock into firmware update mode.
+For the lock to accept new firmware it must be in firmware update mode. The **fwupdate/** request below functions similarly to the **unlock/** endpoint, but instead of unlocking the lock, it returns a command that places the lock into firmware update mode.
 
 [back to top](#overview) / [API TOC](#api)
 <br/>
@@ -1752,14 +1796,3 @@ Used to place a Noke device into firmware update mode. Requires a session string
 [back to top](#overview) / [API TOC](#api)
 <br/>
 <br/>
-
----
-### Sending the Firmware file to the Noke Device
-
-Once the Noke device is in firmware update mode, the firmware can now be updated by sending it a new firmware file. Noke devices use a chip provided by **Nordic Semiconductor**, therefore we've found that the best way to send a firmware file is to use the DFU library provided by Nordic.
-
-Please follow the instructions provided by Nordic to implement their library into your mobile application. The DFU library is available for [iOS](https://github.com/NordicSemiconductor/IOS-Pods-DFU-Library) and [Android](https://github.com/NordicSemiconductor/Android-DFU-Library)
-
-**Note**: The firmware files needed are currently not available to the public. To get the firmware file needed to update a Noke device, please contact a member of the Noke development team.
-
-[back to top](#overview) / [API TOC](#api)
