@@ -438,9 +438,21 @@ Used to set lock settings. Not all locks will support or accept each setting. Se
 	"message": "Command successfully completed",
 	"error_code": 0,
 	"data": {
-		"C6:E1:84:C4:CF:40": [
-			"SUCCESS: assigned setting: explicit-lock",
-			"SUCCESS: saved settings"
+		"locks": [
+			{
+				"mac": "YY:YY:YY:YY:YY:YY",
+				"messages": [
+					"SUCCESS: assigned setting: explicit-lock",
+					"ERROR: failed saving lock settings on YY:YY:YY:YY:YY:YY"
+				]
+			},
+            {
+				"mac": "XX:XX:XX:XX:XX:XX",
+				"messages": [
+					"SUCCESS: assigned setting: explicit-lock",
+					"SUCCESS: saved settings"
+				]
+			}
 		]
 	},
 	"request": "lock/settings",
