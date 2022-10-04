@@ -132,15 +132,15 @@ In general, you can send unlock commands as often and as quickly as you wish, be
 Failing to wait on setup can cause the lock to enter a state where it can't be setup until we reset it on the server. We have tried a number of different strategies to ease or prevent this issue, but as yet have not been 100% successful in all cases. Thus, it is in your best interest to specifically wait 60 seconds after the first unlock attempt of a new lock before trying again. This is also true after an old lock is reset (limited keys cleared from the database).
 
 ### Updating Lock Firmware
-As with any other software the lock firmware needs updating from time to time. This can include for fixing bugs on the locks itself or for adding new functionality. Unfortunately, updating the lock firmware must be done one-by-one with each lock in-hand. There a number of reasons for this. The major reason is that there needs to be a stable Internet connection for downloading the new firmware directly to the lock.
+As with any other software the lock firmware needs updating from time to time. This can include for fixing bugs on the locks itself or for adding new functionality. Updating the lock firmware must be done one-by-one with each lock 'in-hand' (or just near by). There a number of reasons for this. The major reason is that there needs to be a stable Internet connection for downloading the new firmware directly to the lock.
 
 #### Steps for updating firmware using the *Nokē Updater* app
-1. Install the *Nokē Updater*
+1. Install the *Nokē Update* app
     * iOS
-        * Download *Nokē Updater* app from the Apple AppStore
+        * Download *Nokē Update* app from the Apple AppStore
         * https://apps.apple.com/us/app/Nokē-update/id1270460855
     * Android
-        * Download *Nokē Updater* app as an .apk found at the following link
+        * Download *Nokē Update* app as an .apk found at the following link
         * https://drive.google.com/file/d/13LP5YBkSRrZ0nXo07c_vOWzBXd5XCH3e/view?usp=sharing
         * After downloading the .apk to an Android device, open the .apk to install the updater app
 1. Wake the lock and connect with your client app.
