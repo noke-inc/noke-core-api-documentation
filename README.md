@@ -179,11 +179,12 @@ Currently, the firmware files aren't publicly available. If you need an updated 
 <br/>
 
 ## API
+Endpoints marked with '*' are critical to integrate first. See section for reasons why.
 
 * [Locks](#locks)
   * [POST /lock/](#post-lock)
   * [POST /unlock/](#post-unlock)*
-  * [POST /unshackle/](#post-unshackle)
+  * [POST /unshackle/](#post-unshackle)*
   * [POST /engagelock/](#post-engagelock) ${\color{red}(not \ yet \ live)}$
   * [POST /lock/settings/](#post-locksettings) ${\color{red} ( not \ yet \ live ) }$
   * [POST /keys/](#post-keys)
@@ -319,6 +320,8 @@ Used to view information about locks. Supports finding a single lock, multiple l
 ---
 ### POST /unlock/
 
+It is critical to implement this endpoint since setup, syncs, and unlocks happen via this endpoint. You can't use a lock without this call.
+
 Used to unlock a lock. Requires a session string from the lock (*see Nokē Mobile library documentation [Android](https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*), a mac address, and can optionally take a tracking key to associate to lock activity. 
 
 #### HEADERS
@@ -374,6 +377,8 @@ Used to unlock a lock. Requires a session string from the lock (*see Nokē Mobil
 
 ---
 ### POST /unshackle/
+
+It is critical to implement this endpoint because many, if not all, locks require unshackling the lock to replace the battery. You do not want to have locks in production finally running out of battery charge and not be able to change batteries because this call isn't implemented.
 
 Used to remove the shackle from an HD padlock. Operates identically to the ***/unlock/*** endpoint.  Please see [above](#post-unlock) for more details. 
 
@@ -1512,7 +1517,9 @@ Success
 ### POST /upload/
 > __Warning__
 > **DON'T CALL THIS ENDPOINT** <br/>
-> *The Nokē Mobile library documentation calls this automatically when a response comes back to the app. This description is included for informational purposes.*
+> *The Nokē Mobile library calls this automatically when a response comes back to the app. This description is included for informational purposes.*
+
+Although you should not implement this endpoint, it is critical that the Noke Mobile library has the correct mobile API key and Mode because if the library can't call this endpoint initial lock setup (using the /unlock/ endpoint) will fail.
 
 Used to upload lock activity logs from a phone app using the  *Nokē Mobile library*. Requires a session string from the lock (*see Nokē Mobile library documentation [Android](https://github.com/noke-inc/noke-mobile-library-android#nok%C4%93-mobile-library-for-android) / [iOS](https://github.com/noke-inc/noke-mobile-library-ios#nok%C4%93-mobile-library-for-ios)*), a mac address, and can optionally take a tracking key to associate to lock activity. 
 
