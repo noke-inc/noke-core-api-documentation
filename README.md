@@ -6,7 +6,7 @@ The Nokē Core API is a quick and simple way to integrate Nokē products with yo
 
 #### Nokē Product Names to Use in API
 
-* **3E** Nokē Volt and Unit Controllers
+* **3E** Nokē Volt and Entry Controllers
 * **1A** Nokē ONE Locks
 * **2A** Nokē Ion Locks
 * **3K** NokēPad
